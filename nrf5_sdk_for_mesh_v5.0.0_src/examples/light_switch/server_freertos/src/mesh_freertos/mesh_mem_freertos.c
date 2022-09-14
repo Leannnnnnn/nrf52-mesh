@@ -40,6 +40,7 @@
 
 void mesh_mem_init(void)
 {
+
 }
 
 void * mesh_mem_alloc(size_t size)
@@ -58,3 +59,4 @@ void * mesh_mem_calloc(size_t nmemb, size_t size)
     return NULL;
 }
 
+//test

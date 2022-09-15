@@ -110,12 +110,6 @@
         Name="Common"
         c_user_include_directories="../../../mesh/core/include;../../../mesh/core/api" />
     </folder>
-    <folder Name="Mesh stack">
-      <file file_name="../../../mesh/stack/src/mesh_stack.c" />
-      <configuration
-        Name="Common"
-        c_user_include_directories="../../../mesh/core/include;../../../mesh/core/api" />
-    </folder>
     <folder Name="GATT">
       <file file_name="../../../mesh/gatt/src/mesh_gatt.c" />
       <file file_name="../../../mesh/gatt/src/proxy.c" />
@@ -186,6 +180,7 @@
       <file file_name="$(SDK_ROOT:../../../../nRF5_SDK_17.0.2_d674dde)/modules/nrfx/mdk/ses_startup_nrf52840.s" />
       <file file_name="$(SDK_ROOT:../../../../nRF5_SDK_17.0.2_d674dde)/modules/nrfx/mdk/ses_startup_nrf_common.s" />
       <file file_name="../../../../nRF5_SDK_17.1.0_ddde560/integration/nrfx/legacy/nrf_drv_clock.c" />
+      <file file_name="../../../../nRF5_SDK_17.1.0_ddde560/modules/nrfx/drivers/src/nrfx_clock.c" />
     </folder>
     <folder Name="Provisioning">
       <file file_name="../../../mesh/prov/src/prov_provisionee.c" />
@@ -212,6 +207,12 @@
       <configuration
         Name="Common"
         c_user_include_directories="../../../mesh/core/include;../../../mesh/core/api" />
+      <folder Name="Mesh stack">
+        <file file_name="../../../mesh/stack/src/mesh_stack.c" />
+        <configuration
+          Name="Common"
+          c_user_include_directories="../../../mesh/core/include;../../../mesh/core/api" />
+      </folder>
     </folder>
     <folder Name="Generic OnOff Model">
       <file file_name="../../../models/model_spec/generic_onoff/src/generic_onoff_server.c" />

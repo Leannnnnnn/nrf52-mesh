@@ -13,6 +13,7 @@
  <Project>
   <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0"/>
   <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0;light_switch_server_nrf52840_xxAA_s140_7.2.0"/>
+  <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0;light_switch_server_nrf52840_xxAA_s140_7.2.0;Application"/>
  </Project>
  <Register1/>
  <Register2/>
@@ -38,10 +39,11 @@
  </Watch4>
  <Files>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../../../doc/getting_started/SES.md" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="325" useTextEdit="1" path="src/main.c" left="0" top="303" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="46" y="112" useTextEdit="1" path="src/main.c" left="0" selected="1" top="74" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="54" y="57" useTextEdit="1" path="../../../mesh/core/include/hal.h" left="0" top="45" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="2" y="103" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/NRF52/SES_mesh_pj/newest_sdk/nrf5_sdk_for_mesh_v5.0.0_src/mesh/core/include/hal.h" path="../../../../nRF5_SDK_17.1.0_ddde560/components/softdevice/s140/headers/nrf52/nrf_mbr.h" left="0" top="100" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="53" useTextEdit="1" path="include/nrf_mesh_config_app.h" left="0" selected="1" top="36" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="53" useTextEdit="1" path="include/nrf_mesh_config_app.h" left="0" top="36" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="43" useTextEdit="1" path="src/mesh_freertos/mesh_mem_freertos.c" left="0" top="16" codecName="Default"/>
  </Files>
  <EMStudioWindow activeProject="light_switch_server_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

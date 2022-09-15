@@ -258,6 +258,7 @@
       <configuration
         Name="Debug"
         build_intermediate_directory="build/obj/freertos" />
+      <file file_name="../../../../nRF5_SDK_17.1.0_ddde560/external/freertos/portable/GCC/nrf52/port.c" />
     </folder>
   </project>
   <configuration

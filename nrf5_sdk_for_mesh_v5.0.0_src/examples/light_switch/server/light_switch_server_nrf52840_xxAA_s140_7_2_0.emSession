@@ -14,6 +14,8 @@
   <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0"/>
   <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0;light_switch_server_nrf52840_xxAA_s140_7.2.0"/>
   <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0;light_switch_server_nrf52840_xxAA_s140_7.2.0;Application"/>
+  <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0;light_switch_server_nrf52840_xxAA_s140_7.2.0;nRF5 SDK"/>
+  <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0;light_switch_server_nrf52840_xxAA_s140_7.2.0;Other"/>
  </Project>
  <Register1/>
  <Register2/>
@@ -39,10 +41,11 @@
  </Watch4>
  <Files>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../../../doc/getting_started/SES.md" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="55" useTextEdit="1" path="src/main.c" left="0" selected="1" top="41" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="53" y="372" useTextEdit="1" path="src/main.c" left="0" selected="1" top="257" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="54" y="57" useTextEdit="1" path="../../../mesh/core/include/hal.h" left="0" top="45" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="2" y="103" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/NRF52/SES_mesh_pj/newest_sdk/nrf5_sdk_for_mesh_v5.0.0_src/mesh/core/include/hal.h" path="../../../../nRF5_SDK_17.1.0_ddde560/components/softdevice/s140/headers/nrf52/nrf_mbr.h" left="0" top="100" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="53" useTextEdit="1" path="include/nrf_mesh_config_app.h" left="0" top="36" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="40" y="964" useTextEdit="1" openedFrom="D:/PJ_FreeRTOS/nrf52-mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/server/src/main.c" path="../../../external/app_timer/app_timer_mesh.c" left="0" top="949" codecName="Default"/>
  </Files>
  <EMStudioWindow activeProject="light_switch_server_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

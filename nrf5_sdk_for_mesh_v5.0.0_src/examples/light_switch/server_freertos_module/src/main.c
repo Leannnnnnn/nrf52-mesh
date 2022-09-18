@@ -80,6 +80,57 @@
 #include "app_onoff.h"
 #include "ble_softdevice_support.h"
 
+
+#include "app_dtt.h"
+#include "app_scene.h"
+
+
+/* Custom Libraries */
+#include "custom_twi.h"
+#include "MAX30205_temp_drv.h"
+#include "MAX30102.h"
+#include "max30102_fir.h"
+#include "ICM42688.h"
+
+
+/* 模块调试开关 */
+#define MAX30205_EN 1
+#define MAX30102_EN 0
+#define ICM42688_EN 0 
+
+
+/* Custom static variables */
+#define CACHE_NUMS 150//缓存数
+#define PPG_DATA_THRESHOLD 100000 	//检测阈值
+
+float ppg_data_cache_RED[CACHE_NUMS]={0};  //缓存区
+float ppg_data_cache_IR[CACHE_NUMS]={0};  //缓存区
+
+static float temperature = 0.0;
+float max30102_data[2],fir_output[2];
+
+icm42688_raw_acce_value_t raw_acceXYZ;
+icm42688_raw_gyro_value_t raw_gyroXYZ;
+
+static uint8_t temp_str[30];
+
+
+#define SENSOR_PROCESS_THREAD_STACK_SIZE  (512)
+#define BUTTON_HANDLER_THREAD_STACK_SIZE  (512)
+
+#define SENSOR_PROCESS_THREAD_PRIORITY    (1)
+#define BUTTON_HANDLER_THREAD_PRIORITY  (1)
+
+static TaskHandle_t m_mesh_process_task;  /* The handle for the Mesh processing task */
+static TaskHandle_t m_button_handler_thread;  /* The handle for the button handler thread */
+static TaskHandle_t m_sensor_process_thread;  /* The handle for the sensors processing thread */
+
+
+/*************************************************************************************************/
+
+
+
+
 /*****************************************************************************
  * Definitions
  *****************************************************************************/
@@ -108,12 +159,6 @@ static void button_thread_notify(uint32_t button);
  *****************************************************************************/
 static bool m_device_provisioned;
 
-/* The handle for the Mesh processing task */
-static TaskHandle_t m_mesh_process_task;
-/* The handle for the button handler thread */
-static TaskHandle_t m_button_handler_thread;
-
-/*************************************************************************************************/
 
 
 /* Generic OnOff server structure definition and initialization */
@@ -422,6 +467,25 @@ static uint32_t nrf_mesh_process_thread_init(void)
     return NRF_SUCCESS;
 }
 
+
+/**********************************Function thread program********************************************/
+static void sensor_process_thread(void)
+{
+    for(;;){
+        temperature = temp_read();
+        __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Temp is %d\n", (int)(temperature*100));
+        vTaskDelay(1000);  //延迟50ms
+    }
+
+} 
+
+
+
+
+/**********************************Function thread program********************************************/
+
+
+
 /*************************************************************************************************/
 
 static void initialize(void)
@@ -449,8 +513,45 @@ static void initialize(void)
     // Set up the Mesh processing task for FreeRTOS
     ERROR_CHECK(nrf_mesh_process_thread_init());
 
+    uart_init();
+    uart_send_str("Uart start.\r\n");
+    twi_init();
+
+#if MAX30205_EN
+    temp_init();
+#endif
+
+
+#if MAX30102_EN
+    if(true != max30102_init()){ 
+        __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "max30102 not found!\n");
+    }
+    else{
+        __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "max30102 initiated!\n");
+    }
+    max30102_fir_init();
+#endif
+
+
+#if ICM42688_EN
+    
+    if(true != icm42688_init()){ 
+        __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "icm42688 not found!\n");
+    }
+    else{
+        __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "icm42688 initiated!\n");
+    }
+#endif
+    
+
     // Set up a task for processing button/RTT events
-    if (pdPASS != xTaskCreate(button_handler_thread, "BTN", 512, NULL, 1, &m_button_handler_thread))
+    if (pdPASS != xTaskCreate(button_handler_thread, "BTN", 
+                              BUTTON_HANDLER_THREAD_STACK_SIZE, NULL, BUTTON_HANDLER_THREAD_PRIORITY, &m_button_handler_thread))
+    {
+        APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
+    }
+
+    if (pdPASS != xTaskCreate(sensor_process_thread, "SENSOR", SENSOR_PROCESS_THREAD_STACK_SIZE, NULL, SENSOR_PROCESS_THREAD_PRIORITY, &m_sensor_process_thread))
     {
         APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
     }

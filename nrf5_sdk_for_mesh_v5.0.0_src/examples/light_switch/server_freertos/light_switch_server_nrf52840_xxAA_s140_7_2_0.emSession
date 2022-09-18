@@ -1,9 +1,7 @@
 <!DOCTYPE CrossStudio_Session_File>
 <session>
  <Bookmarks/>
- <Breakpoints groups="Breakpoints" active_group="Breakpoints">
-  <BreakpointListItem trigger="" line="52" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="4" filename="../../../mesh/core/api/nrf_mesh.h" useHWbreakpoint="false"/>
- </Breakpoints>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints"/>
  <ExecutionProfileWindow/>
  <FrameBufferWindow>
   <FrameBufferWindow bufferHeight="-1" addressSpace="" addressText="" bufferWidth="-1"/>
@@ -24,7 +22,7 @@
   <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0"/>
   <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0;light_switch_server_nrf52840_xxAA_s140_7.2.0"/>
   <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0;light_switch_server_nrf52840_xxAA_s140_7.2.0;Application"/>
-  <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0;light_switch_server_nrf52840_xxAA_s140_7.2.0;uECC"/>
+  <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0;light_switch_server_nrf52840_xxAA_s140_7.2.0;FreeRTOS"/>
  </Project>
  <Register1>
   <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/MSP;CPU/PSP;CPU/PRIMASK;CPU/BASEPRI;CPU/FAULTMASK;CPU/CONTROL;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="light_switch_server_nrf52840_xxAA_s140_7.2.0" decimalNodes="" octalNodes="" unsignedNodes=""/>
@@ -57,30 +55,8 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../../../doc/getting_started/SES.md" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="22" y="442" useTextEdit="1" path="src/main.c" left="0" selected="1" top="423" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="54" y="57" useTextEdit="1" path="../../../mesh/core/include/hal.h" left="0" top="45" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="2" y="103" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/NRF52/SES_mesh_pj/newest_sdk/nrf5_sdk_for_mesh_v5.0.0_src/mesh/core/include/hal.h" path="../../../../nRF5_SDK_17.1.0_ddde560/components/softdevice/s140/headers/nrf52/nrf_mbr.h" left="0" top="100" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="216" useTextEdit="1" path="include/nrf_mesh_config_app.h" left="0" top="189" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="104" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nRF5_SDK_17.1.0_ddde560/external/freertos/source/queue.c" path="include/FreeRTOSConfig.h" left="0" top="87" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="30" y="137" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/external/freertos/source/timers.c" left="0" top="119" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="26" y="62" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/external/freertos/source/list.c" left="0" top="53" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="37" useTextEdit="1" path="../../../mesh/gatt/src/mesh_gatt.c" left="0" top="11" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="40" useTextEdit="1" path="../../../mesh/bearer/api/ad_listener.h" left="0" top="14" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="37" useTextEdit="1" path="../../../mesh/bearer/src/ad_listener.c" left="0" top="11" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="66" useTextEdit="1" path="../../../external/micro-ecc/platform-specific.inc" left="0" top="37" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="83" useTextEdit="1" path="../../../external/micro-ecc/uECC.c" left="0" top="57" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="37" useTextEdit="1" path="../../../mesh/prov/src/provisioning.c" left="0" top="11" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="41" useTextEdit="1" path="../../../models/foundation/config/src/composition_data.c" left="0" top="15" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="39" useTextEdit="1" path="../../../models/foundation/health/src/health_server.c" left="0" top="11" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="43" useTextEdit="1" path="../../../models/model_spec/common/include/model_common.h" left="0" top="15" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="37" useTextEdit="1" path="../../../models/model_spec/common/src/model_config_file.c" left="0" top="37" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="15" y="11" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/external/freertos/portable/CMSIS/nrf52/port_cmsis.c" left="0" top="11" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="6" y="61" useTextEdit="1" path="src/mesh_freertos/mesh_mem_freertos.c" left="0" top="33" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="52" y="19" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/server_freertos/src/main.c" path="../../../../nRF5_SDK_17.1.0_ddde560/components/boards/boards.h" left="0" top="212" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="34" y="223" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/server_freertos/src/main.c" path="../../common/src/simple_hal.c" left="0" top="203" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="6" y="2493" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/common/src/simple_hal.c" path="include/sdk_config.h" left="0" top="2489" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="43" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/modules/nrfx/drivers/src/nrfx_gpiote.c" left="0" top="42" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="101" useTextEdit="1" path="src/main.c" left="0" selected="1" top="82" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="include/FreeRTOSConfig.h" left="0" top="27" codecName="Default"/>
  </Files>
  <EMStudioWindow activeProject="light_switch_server_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/server_freertos/include" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

@@ -13,8 +13,9 @@
  <Memory3/>
  <Memory4/>
  <Project>
-  <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0"/>
-  <ProjectSessionItem path="light_switch_server_nrf52840_xxAA_s140_7.2.0;light_switch_server_nrf52840_xxAA_s140_7.2.0"/>
+  <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0"/>
+  <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0"/>
+  <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;Application"/>
  </Project>
  <Register1/>
  <Register2/>
@@ -39,8 +40,8 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="7" y="2522" useTextEdit="1" path="include/sdk_config.h" left="0" top="2362" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="346" useTextEdit="1" path="src/main.c" left="0" selected="1" top="357" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="7" y="2522" useTextEdit="1" path="include/sdk_config.h" left="0" top="2477" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="72" useTextEdit="1" path="src/main.c" left="0" selected="1" top="35" codecName="Default"/>
  </Files>
- <EMStudioWindow activeProject="light_switch_server_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="D:/PJ_FreeRTOS/nrf52-mesh/nRF5_SDK_17.1.0_ddde560/external/freertos/portable/GCC/nrf52" debugSearchPath="" autoConnectCapabilities="3199"/>
+ <EMStudioWindow activeProject="light_switch_server_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="D:/PJ_FreeRTOS/nrf52-mesh/nRF5_SDK_17.1.0_ddde560/external/freertos/portable/GCC/nrf52" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

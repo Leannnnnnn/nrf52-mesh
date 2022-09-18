@@ -1,0 +1,50 @@
+<!DOCTYPE CrossStudio_Session_File>
+<session>
+ <Bookmarks/>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints"/>
+ <ExecutionProfileWindow/>
+ <FrameBufferWindow>
+  <FrameBufferWindow bufferHeight="-1" addressSpace="" addressText="" bufferWidth="-1"/>
+ </FrameBufferWindow>
+ <Memory1/>
+ <Memory2/>
+ <Memory3/>
+ <Memory4/>
+ <Project>
+  <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0"/>
+  <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0"/>
+  <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;Application"/>
+  <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;Custom Libraries"/>
+  <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;Toolchain"/>
+ </Project>
+ <Register1/>
+ <Register2/>
+ <Register3/>
+ <Register4/>
+ <Threads>
+  <ThreadsWindow showLists=""/>
+ </Threads>
+ <TraceWindow>
+  <Trace enabled="Yes"/>
+ </TraceWindow>
+ <Watch1>
+  <Watches active="1" update="Never"/>
+ </Watch1>
+ <Watch2>
+  <Watches active="0" update="Never"/>
+ </Watch2>
+ <Watch3>
+  <Watches active="0" update="Never"/>
+ </Watch3>
+ <Watch4>
+  <Watches active="0" update="Never"/>
+ </Watch4>
+ <Files>
+  <SessionOpenFile windowGroup="DockEditLeft" x="17" y="38" useTextEdit="1" path="src/main.c" left="0" top="27" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="23" y="6956" useTextEdit="1" path="include/sdk_config.h" left="0" top="6922" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../../common/src/rtt_input.c" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="43" useTextEdit="1" path="../../../mesh/core/api/nrf_mesh.h" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="3" useTextEdit="1" path="include/max30102_fir.h" left="0" selected="1" top="0" codecName="Default"/>
+ </Files>
+ <EMStudioWindow activeProject="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="D:/PJ_FreeRTOS/nrf52-mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/server_freertos_module" debugSearchPath="" autoConnectCapabilities="3199"/>
+</session>

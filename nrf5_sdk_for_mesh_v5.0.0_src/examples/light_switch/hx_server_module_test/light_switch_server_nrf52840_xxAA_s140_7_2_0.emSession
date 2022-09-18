@@ -68,11 +68,11 @@
  </Watch4>
  <Files>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../../../doc/getting_started/SES.md" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="26" y="49" useTextEdit="1" path="src/main.c" left="0" selected="1" top="566" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="26" y="49" useTextEdit="1" path="src/main.c" left="0" selected="1" top="73" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="6833" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/hx_server_module_test/src/custom_twi.c" path="include/sdk_config.h" left="0" top="6820" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="1" y="97" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/components/libraries/uart/retarget.c" left="0" top="75" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="17" y="69" useTextEdit="1" path="../../../mesh/core/include/timer.h" left="0" top="41" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="77" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/hx_server_module_test/include/MAX30102.h" path="src/custom_twi.c" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="77" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/hx_server_module_test/include/MAX30102.h" path="src/custom_twi.c" left="0" top="36" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="99" y="25" useTextEdit="1" path="include/custom_twi.h" left="0" top="8" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="11" useTextEdit="1" path="include/MAX30205_temp_drv.h" left="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="1" y="25" useTextEdit="1" path="src/MAX30205_temp_drv.c" left="0" top="6" codecName="Default"/>
@@ -93,5 +93,5 @@
   <SessionOpenFile windowGroup="DockEditLeft" x="27" y="65" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/models/model_spec/generic_onoff/src/generic_onoff_mc.c" path="../../../models/model_spec/generic_onoff/include/generic_onoff_mc.h" left="0" top="49" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="190" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/models/model_spec/generic_onoff/include/generic_onoff_mc.h" path="include/nrf_mesh_config_app.h" left="0" top="165" codecName="Default"/>
  </Files>
- <EMStudioWindow activeProject="hx_server_uart_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/hx_server_module_test/src" debugSearchPath="" autoConnectCapabilities="3711"/>
+ <EMStudioWindow activeProject="hx_server_uart_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/hx_server_module_test/src" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

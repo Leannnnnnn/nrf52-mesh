@@ -1,9 +1,9 @@
 <!DOCTYPE CrossStudio_Project_File>
 <solution
-  Name="light_switch_server_nrf52840_xxAA_s140_7.2.0"
+  Name="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0"
   target="8"
   version="2">
-  <project Name="light_switch_server_nrf52840_xxAA_s140_7.2.0">
+  <project Name="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0">
     <configuration
       Name="Common"
       arm_architecture="v7EM"
@@ -260,6 +260,7 @@
         build_intermediate_directory="build/obj/freertos" />
       <file file_name="../../../../nRF5_SDK_17.1.0_ddde560/external/freertos/portable/GCC/nrf52/port.c" />
     </folder>
+    <folder Name="Custom Libraries" />
   </project>
   <configuration
     Name="Debug"

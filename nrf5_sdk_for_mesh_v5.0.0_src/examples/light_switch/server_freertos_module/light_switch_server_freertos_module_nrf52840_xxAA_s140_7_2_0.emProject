@@ -260,7 +260,21 @@
         build_intermediate_directory="build/obj/freertos" />
       <file file_name="../../../../nRF5_SDK_17.1.0_ddde560/external/freertos/portable/GCC/nrf52/port.c" />
     </folder>
-    <folder Name="Custom Libraries" />
+    <folder Name="Custom Libraries">
+      <file file_name="src/custom_twi.c" />
+      <file file_name="src/custom_uart.c" />
+      <file file_name="src/hx_control_model_create.c" />
+      <file file_name="src/hx_model_client.c" />
+      <file file_name="src/hx_model_control.c" />
+      <file file_name="src/hx_model_server.c" />
+      <file file_name="src/ICM42688.c" />
+      <file file_name="src/MAX30102.c" />
+      <file file_name="src/max30102_fir.c" />
+      <file file_name="src/MAX30205_temp_drv.c" />
+      <configuration
+        Name="Common"
+        c_user_include_directories="../../../mesh/core/include;../../../mesh/core/api" />
+    </folder>
   </project>
   <configuration
     Name="Debug"

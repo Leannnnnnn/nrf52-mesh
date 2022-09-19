@@ -43,7 +43,6 @@
 #include "simple_hal.h"
 #include "app_timer.h"
 
-#include "custom_uart.h"
 
 /* Core */
 #include "nrf_mesh_config_core.h"
@@ -81,6 +80,7 @@
 #include "app_scene.h"
 
 /* Custom Libraries */
+#include "custom_uart.h"
 #include "custom_twi.h"
 #include "MAX30205_temp_drv.h"
 #include "MAX30102.h"

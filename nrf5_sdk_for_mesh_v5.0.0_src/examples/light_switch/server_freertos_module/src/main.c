@@ -86,6 +86,7 @@
 
 
 /* Custom Libraries */
+#include "custom_uart.h"
 #include "custom_twi.h"
 #include "MAX30205_temp_drv.h"
 #include "MAX30102.h"

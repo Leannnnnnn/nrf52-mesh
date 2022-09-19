@@ -1,9 +1,9 @@
 <!DOCTYPE CrossStudio_Project_File>
 <solution
-  Name="hx_server_uart_nrf52840_xxAA_s140_7.2.0"
+  Name="hx_server_module_test_nrf52840_xxAA_s140_7.2.0"
   target="8"
   version="2">
-  <project Name="hx_server_uart_nrf52840_xxAA_s140_7.2.0">
+  <project Name="hx_server_module_test_nrf52840_xxAA_s140_7.2.0">
     <configuration
       CMSIS_CORE="Yes"
       CMSIS_DSP="Cortex-M4 Little Endian With FPU"

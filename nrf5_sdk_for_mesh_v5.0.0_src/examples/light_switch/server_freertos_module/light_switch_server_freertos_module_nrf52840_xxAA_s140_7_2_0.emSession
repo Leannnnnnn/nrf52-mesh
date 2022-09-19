@@ -1,26 +1,45 @@
 <!DOCTYPE CrossStudio_Session_File>
 <session>
  <Bookmarks/>
- <Breakpoints groups="Breakpoints" active_group="Breakpoints"/>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints">
+  <Exceptions set="MemManage;UsageFault_Coprocessor;UsageFault_CheckingError;UsageFault_StateError;BusFault;ExceptionEntryReturnFault;HardFault"/>
+ </Breakpoints>
  <ExecutionProfileWindow/>
  <FrameBufferWindow>
   <FrameBufferWindow bufferHeight="-1" addressSpace="" addressText="" bufferWidth="-1"/>
  </FrameBufferWindow>
- <Memory1/>
- <Memory2/>
- <Memory3/>
- <Memory4/>
+ <Memory1>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" sizeText="" addressText=""/>
+ </Memory1>
+ <Memory2>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" sizeText="" addressText=""/>
+ </Memory2>
+ <Memory3>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" sizeText="" addressText=""/>
+ </Memory3>
+ <Memory4>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" sizeText="" addressText=""/>
+ </Memory4>
  <Project>
   <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0"/>
   <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0"/>
   <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;Application"/>
   <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;Custom Libraries"/>
+  <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;nRF5 SDK"/>
   <ProjectSessionItem path="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0;Toolchain"/>
  </Project>
- <Register1/>
- <Register2/>
- <Register3/>
- <Register4/>
+ <Register1>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/MSP;CPU/PSP;CPU/PRIMASK;CPU/BASEPRI;CPU/FAULTMASK;CPU/CONTROL;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register1>
+ <Register2>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/MSP;CPU/PSP;CPU/PRIMASK;CPU/BASEPRI;CPU/FAULTMASK;CPU/CONTROL;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register2>
+ <Register3>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/MSP;CPU/PSP;CPU/PRIMASK;CPU/BASEPRI;CPU/FAULTMASK;CPU/CONTROL;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register3>
+ <Register4>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/MSP;CPU/PSP;CPU/PRIMASK;CPU/BASEPRI;CPU/FAULTMASK;CPU/CONTROL;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register4>
  <Threads>
   <ThreadsWindow showLists=""/>
  </Threads>
@@ -40,11 +59,17 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="17" y="38" useTextEdit="1" path="src/main.c" left="0" top="27" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="535" useTextEdit="1" path="src/main.c" left="0" selected="1" top="516" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="23" y="6956" useTextEdit="1" path="include/sdk_config.h" left="0" top="6922" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../../common/src/rtt_input.c" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="43" useTextEdit="1" path="../../../mesh/core/api/nrf_mesh.h" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="3" useTextEdit="1" path="include/max30102_fir.h" left="0" selected="1" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="43" useTextEdit="1" path="../../../mesh/core/api/nrf_mesh.h" left="0" top="1" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="3" useTextEdit="1" path="include/max30102_fir.h" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="16" useTextEdit="1" path="src/custom_uart.c" left="0" top="18" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="63" useTextEdit="1" openedFrom="D:/PJ_FreeRTOS/nrf52-mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/server_freertos_module/src/main.c" path="include/nrf_mesh_config_app.h" left="0" top="41" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="82" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/components/libraries/uart/app_uart_fifo.c" left="0" top="38" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="529" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/integration/nrfx/legacy/nrf_drv_uart.h" left="0" top="497" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="37" useTextEdit="1" path="src/custom_twi.c" left="0" top="11" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="57" useTextEdit="1" openedFrom="D:/PJ_FreeRTOS/nrf52-mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/server_freertos_module/src/main.c" path="src/MAX30205_temp_drv.c" left="0" top="22" codecName="Default"/>
  </Files>
- <EMStudioWindow activeProject="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="D:/PJ_FreeRTOS/nrf52-mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/server_freertos_module" debugSearchPath="" autoConnectCapabilities="3199"/>
+ <EMStudioWindow activeProject="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="D:/PJ_FreeRTOS/nrf52-mesh/nRF5_SDK_17.1.0_ddde560/integration/nrfx/legacy" debugSearchPath="" autoConnectCapabilities="3711"/>
 </session>

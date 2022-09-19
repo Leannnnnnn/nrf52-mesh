@@ -68,7 +68,7 @@
  </Watch4>
  <Files>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../../../doc/getting_started/SES.md" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="26" y="49" useTextEdit="1" path="src/main.c" left="0" selected="1" top="64" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="353" useTextEdit="1" path="src/main.c" left="0" selected="1" top="366" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="6833" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/nRF52_mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/hx_server_module_test/src/custom_twi.c" path="include/sdk_config.h" left="0" top="6820" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="1" y="97" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/components/libraries/uart/retarget.c" left="0" top="75" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="17" y="69" useTextEdit="1" path="../../../mesh/core/include/timer.h" left="0" top="41" codecName="Default"/>

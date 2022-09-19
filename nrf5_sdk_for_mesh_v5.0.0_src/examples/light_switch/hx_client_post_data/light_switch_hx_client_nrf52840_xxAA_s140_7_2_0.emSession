@@ -23,6 +23,7 @@
  <Project>
   <ProjectSessionItem path="data_post_hx_client_nrf52840_xxAA_s140_7.2.0"/>
   <ProjectSessionItem path="data_post_hx_client_nrf52840_xxAA_s140_7.2.0;data_post_hx_client_nrf52840_xxAA_s140_7.2.0"/>
+  <ProjectSessionItem path="data_post_hx_client_nrf52840_xxAA_s140_7.2.0;data_post_hx_client_nrf52840_xxAA_s140_7.2.0;Generic OnOff Model"/>
   <ProjectSessionItem path="data_post_hx_client_nrf52840_xxAA_s140_7.2.0;data_post_hx_client_nrf52840_xxAA_s140_7.2.0;nRF5 SDK"/>
  </Project>
  <Register1>
@@ -56,7 +57,8 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="109" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/modules/nrfx/mdk/ses_startup_nrf_common.s" left="0" selected="1" top="92" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="109" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/modules/nrfx/mdk/ses_startup_nrf_common.s" left="0" top="92" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="125" useTextEdit="1" path="../../../models/model_spec/generic_onoff/src/generic_onoff_client.c" left="0" selected="1" top="129" codecName="Default"/>
  </Files>
  <EMStudioWindow activeProject="data_post_hx_client_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

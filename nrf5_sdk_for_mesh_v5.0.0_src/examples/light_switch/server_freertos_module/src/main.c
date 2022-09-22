@@ -95,9 +95,9 @@
 
 
 /* 模块调试开关 */
-#define MAX30205_EN 1
-#define MAX30102_EN 1
-#define ICM42688_EN 0 
+#define MAX30205_EN 0
+#define MAX30102_EN 0
+#define ICM42688_EN 1 
 
 
 /* Custom static variables */
@@ -477,13 +477,14 @@ static void sensor_process_thread(void)
     uint16_t cache_counter=0;  //缓存计数器
 #endif
     for(;;){
+#if MAX30205_EN 
         i++;
         if(i == 100){  //降低采样频率
             i = 0;
             temperature = temp_read();
-            //__LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Temp is %d\n", (int)(temperature*100));
+            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Temp is %d\n", (int)(temperature*100));
         }
-
+#endif
 #if MAX30102_EN 
         if(nrf_gpio_pin_read(PIN_INT) == 0)			//中断信号产生
         {
@@ -612,13 +613,22 @@ static void initialize(void)
     
 
     // Set up a task for processing button/RTT events
-    if (pdPASS != xTaskCreate(button_handler_thread, "BTN", 
-                              BUTTON_HANDLER_THREAD_STACK_SIZE, NULL, BUTTON_HANDLER_THREAD_PRIORITY, &m_button_handler_thread))
+    if (pdPASS != xTaskCreate(button_handler_thread, 
+                              "BTN", 
+                              BUTTON_HANDLER_THREAD_STACK_SIZE, 
+                              NULL, 
+                              BUTTON_HANDLER_THREAD_PRIORITY, 
+                              &m_button_handler_thread))
     {
         APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
     }
 
-    if (pdPASS != xTaskCreate(sensor_process_thread, "SENSOR", SENSOR_PROCESS_THREAD_STACK_SIZE, NULL, SENSOR_PROCESS_THREAD_PRIORITY, &m_sensor_process_thread))
+    if (pdPASS != xTaskCreate(sensor_process_thread, 
+                              "SENSOR", 
+                              SENSOR_PROCESS_THREAD_STACK_SIZE, 
+                              NULL, 
+                              SENSOR_PROCESS_THREAD_PRIORITY, 
+                              &m_sensor_process_thread))
     {
         APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
     }

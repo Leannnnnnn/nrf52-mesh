@@ -96,8 +96,8 @@
 
 /* 模块调试开关 */
 #define MAX30205_EN 0
-#define MAX30102_EN 0
-#define ICM42688_EN 1 
+#define MAX30102_EN 1
+#define ICM42688_EN 0 
 
 
 /* Custom static variables */
@@ -494,8 +494,8 @@ static void sensor_process_thread(void)
             ir_max30102_fir(&max30102_data[0],&fir_output[0]);
             red_max30102_fir(&max30102_data[1],&fir_output[1]);  //滤波
     
-            //sprintf(temp_str, "%d,%d\n", (int32_t)(max30102_data[0]*100), (int32_t)(fir_output[0]*100));
-            //uart_send_str(temp_str);
+            sprintf(temp_str, "%d,%d\n", (int32_t)(max30102_data[0]*100), (int32_t)(fir_output[0]*100));
+            uart_send_str(temp_str);
 
             if((max30102_data[0]>PPG_DATA_THRESHOLD)&&(max30102_data[1]>PPG_DATA_THRESHOLD))  //大于阈值，说明传感器有接触
             {		
@@ -513,7 +513,6 @@ static void sensor_process_thread(void)
             {
                 __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Heart rate: %d  /min\n ",max30102_getHeartRate(ppg_data_cache_IR,CACHE_NUMS));
                 __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "SpO2: %d  %%\n", (int32_t)(max30102_getSpO2(ppg_data_cache_IR,ppg_data_cache_RED,CACHE_NUMS)*10));
-                __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Temp is %d\n", (int)(temperature*100));
                 cache_counter=0;
             }
         }
@@ -542,7 +541,7 @@ static void sensor_process_thread(void)
         
 #endif
 
-        vTaskDelay(5);  //延迟单位ms
+        vTaskDelay(10);  //延迟单位ms
     }
 
 } 

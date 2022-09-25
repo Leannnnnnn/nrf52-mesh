@@ -68,7 +68,7 @@
  *  It is important that this is not lower than the priority of the SoftDevice Handler
  *  task in nrf_sdh_freertos.c as that will cause issues with GATT provisioning.
  */
-#define MESH_FREERTOS_TASK_PRIO             2
+#define MESH_FREERTOS_TASK_PRIO             3
 
 /** @} end of MESH_FREERTOS */
 

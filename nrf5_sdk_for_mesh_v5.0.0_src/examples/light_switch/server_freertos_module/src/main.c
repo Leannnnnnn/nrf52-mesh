@@ -95,9 +95,9 @@
 
 
 /* 模块调试开关 */
-#define MAX30205_EN 0
+#define MAX30205_EN 1
 #define MAX30102_EN 1
-#define ICM42688_EN 0 
+#define ICM42688_EN 1 
 
 
 /* Custom static variables */
@@ -116,15 +116,18 @@ icm42688_raw_gyro_value_t raw_gyroXYZ;
 static uint8_t temp_str[30];
 
 
-#define SENSOR_PROCESS_THREAD_STACK_SIZE  (512)
-#define BUTTON_HANDLER_THREAD_STACK_SIZE  (512)
+#define SENSOR_PROCESS_THREAD_STACK_SIZE     (512)
+#define HEARTRATE_PROCESS_THREAD_STACK_SIZE  (512)
+#define BUTTON_HANDLER_THREAD_STACK_SIZE     (512)
 
-#define SENSOR_PROCESS_THREAD_PRIORITY    (1)
-#define BUTTON_HANDLER_THREAD_PRIORITY  (1)
+#define SENSOR_PROCESS_THREAD_PRIORITY       (1)
+#define HEARTRATE_PROCESS_THREAD_PRIORITY    (2)
+#define BUTTON_HANDLER_THREAD_PRIORITY       (1)
 
 static TaskHandle_t m_mesh_process_task;  /* The handle for the Mesh processing task */
 static TaskHandle_t m_button_handler_thread;  /* The handle for the button handler thread */
-static TaskHandle_t m_sensor_process_thread;  /* The handle for the sensors processing thread */
+static TaskHandle_t m_heartRate_process_thread;  /* The handle for heartRate sensors processing thread */
+static TaskHandle_t m_sensor_process_thread;  /* The handle for other sensors processing thread */
 
 
 /*************************************************************************************************/
@@ -473,9 +476,11 @@ static uint32_t nrf_mesh_process_thread_init(void)
 static void sensor_process_thread(void)
 {
     static int i = 0;
+    /*
 #if MAX30102_EN 
     uint16_t cache_counter=0;  //缓存计数器
 #endif
+    */
     for(;;){
 #if MAX30205_EN 
         i++;
@@ -485,6 +490,76 @@ static void sensor_process_thread(void)
             __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Temp is %d\n", (int)(temperature*100));
         }
 #endif
+/*
+#if MAX30102_EN 
+        if(nrf_gpio_pin_read(PIN_INT) == 0)			//中断信号产生
+        {
+            hr_flag_clear();
+            max30102_fifo_read(max30102_data);		//读取数据
+                        
+            ir_max30102_fir(&max30102_data[0],&fir_output[0]);
+            red_max30102_fir(&max30102_data[1],&fir_output[1]);  //滤波
+    
+            sprintf(temp_str, "%d,%d\n", (int32_t)(max30102_data[0]*100), (int32_t)(fir_output[0]*100));
+            //uart_send_str(temp_str);
+
+            if((max30102_data[0]>PPG_DATA_THRESHOLD)&&(max30102_data[1]>PPG_DATA_THRESHOLD))  //大于阈值，说明传感器有接触
+            {		
+                ppg_data_cache_IR[cache_counter]=fir_output[0];
+                ppg_data_cache_RED[cache_counter]=fir_output[1];
+                cache_counter++;
+            }
+            else				//小于阈值
+            {
+                cache_counter=0;
+                __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "No finger!\n");
+            }
+
+            if(cache_counter>=CACHE_NUMS)  //收集满了数据
+            {
+                __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Heart rate: %d  /min\n ",max30102_getHeartRate(ppg_data_cache_IR,CACHE_NUMS));
+                __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "SpO2: %d  %%\n", (int32_t)(max30102_getSpO2(ppg_data_cache_IR,ppg_data_cache_RED,CACHE_NUMS)*10));
+                cache_counter=0;
+            }
+        }
+#endif
+*/
+
+#if ICM42688_EN
+        if(true == icm42688_get_raw_acce(&raw_acceXYZ)){ 
+            //__LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "%d,%d,%d\n",raw_acceXYZ.raw_acce_x, raw_acceXYZ.raw_acce_y, raw_acceXYZ.raw_acce_z);
+            sprintf(temp_str, "%d,%d,%d\n", raw_acceXYZ.raw_acce_x, raw_acceXYZ.raw_acce_y, raw_acceXYZ.raw_acce_z);
+            //uart_send_str(temp_str);
+        }
+        else{
+            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "icm42688 not found!\n");
+        }
+        
+        /*
+        if(true == icm42688_get_raw_gyro(&raw_gyroXYZ)){ 
+            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "%d,%d,%d\n", raw_gyroXYZ.raw_gyro_x, raw_gyroXYZ.raw_gyro_y, raw_gyroXYZ.raw_gyro_z);
+            sprintf(temp_str, "%d,%d,%d\n", raw_gyroXYZ.raw_gyro_x, raw_gyroXYZ.raw_gyro_y, raw_gyroXYZ.raw_gyro_z);
+            uart_send_str(temp_str);
+        }
+        else{
+            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "icm42688 not found!\n");
+        }
+        */
+        
+#endif
+        vTaskDelay(10);  //延迟单位ms
+    }
+
+} 
+
+
+
+static void heartRate_process_thread(void)
+{
+#if MAX30102_EN 
+    uint16_t cache_counter=0;  //缓存计数器
+#endif
+    for(;;){
 #if MAX30102_EN 
         if(nrf_gpio_pin_read(PIN_INT) == 0)			//中断信号产生
         {
@@ -517,35 +592,9 @@ static void sensor_process_thread(void)
             }
         }
 #endif
-
-#if ICM42688_EN
-        if(true == icm42688_get_raw_acce(&raw_acceXYZ)){ 
-            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "%d,%d,%d\n",raw_acceXYZ.raw_acce_x, raw_acceXYZ.raw_acce_y, raw_acceXYZ.raw_acce_z);
-            sprintf(temp_str, "%d,%d,%d\n", raw_acceXYZ.raw_acce_x, raw_acceXYZ.raw_acce_y, raw_acceXYZ.raw_acce_z);
-            uart_send_str(temp_str);
-        }
-        else{
-            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "icm42688 not found!\n");
-        }
-        
-        /*
-        if(true == icm42688_get_raw_gyro(&raw_gyroXYZ)){ 
-            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "%d,%d,%d\n", raw_gyroXYZ.raw_gyro_x, raw_gyroXYZ.raw_gyro_y, raw_gyroXYZ.raw_gyro_z);
-            sprintf(temp_str, "%d,%d,%d\n", raw_gyroXYZ.raw_gyro_x, raw_gyroXYZ.raw_gyro_y, raw_gyroXYZ.raw_gyro_z);
-            uart_send_str(temp_str);
-        }
-        else{
-            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "icm42688 not found!\n");
-        }
-        */
-        
-#endif
-
         vTaskDelay(10);  //延迟单位ms
     }
-
-} 
-
+}
 
 
 
@@ -631,6 +680,18 @@ static void initialize(void)
     {
         APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
     }
+    
+    if (pdPASS != xTaskCreate(heartRate_process_thread, 
+                              "HeartRate", 
+                              HEARTRATE_PROCESS_THREAD_STACK_SIZE, 
+                              NULL, 
+                              HEARTRATE_PROCESS_THREAD_PRIORITY, 
+                              &m_heartRate_process_thread))
+    {
+        APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
+    }
+    
+
 
     // Create a FreeRTOS task for handling SoftDevice events.
     // That task will call the start function when the task is started.

@@ -139,7 +139,7 @@ uint16_t max30102_getHeartRate(float *input_data,uint16_t cache_nums)
     }
     if((temp>14)&&(temp<100))
     {
-        return 3000/temp;  //60/temp间隔/采样率
+        return 6000/temp;  //60/temp间隔/采样率
     }
     else
     {

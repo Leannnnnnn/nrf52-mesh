@@ -55,7 +55,7 @@
 /** Set this to 1 to resume the Mesh processing task in the FreeRTOS idle handler instead
  *  of resuming it in the bearer_event signal handler
  */
-#define MESH_FREERTOS_IDLE_HANDLER_RESUME   1
+#define MESH_FREERTOS_IDLE_HANDLER_RESUME   0
 
 /** The stack depth used for the Mesh processing task.
  *  The actual stack allocated is equal to MESH_FREERTOS_TASK_STACK_DEPTH * sizeof(StackType_t)
@@ -112,7 +112,7 @@
                             1 + /* Default Transition Time Server               */ \
                             1 + /* Scene Server                                 */ \
                             1 + /* Scene Setup Server (extends Scene Server)    */ \
-                            1   /* hx control model */ )
+                            0   /* hx control model */ )
 
 /**
  * The number of elements in the application.

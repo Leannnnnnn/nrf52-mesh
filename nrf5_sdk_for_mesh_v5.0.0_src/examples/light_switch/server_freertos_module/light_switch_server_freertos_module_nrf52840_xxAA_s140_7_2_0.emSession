@@ -59,17 +59,17 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="535" useTextEdit="1" path="src/main.c" left="0" selected="1" top="516" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="554" useTextEdit="1" path="src/main.c" left="0" selected="1" top="717" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="23" y="6956" useTextEdit="1" path="include/sdk_config.h" left="0" top="6922" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../../common/src/rtt_input.c" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="43" useTextEdit="1" path="../../../mesh/core/api/nrf_mesh.h" left="0" top="1" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="43" useTextEdit="1" path="../../../mesh/core/api/nrf_mesh.h" left="0" top="2" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="9" y="3" useTextEdit="1" path="include/max30102_fir.h" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="16" useTextEdit="1" path="src/custom_uart.c" left="0" top="18" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="9" y="16" useTextEdit="1" path="src/custom_uart.c" left="0" top="16" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="8" y="63" useTextEdit="1" openedFrom="D:/PJ_FreeRTOS/nrf52-mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/server_freertos_module/src/main.c" path="include/nrf_mesh_config_app.h" left="0" top="41" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="82" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/components/libraries/uart/app_uart_fifo.c" left="0" top="38" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="82" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/components/libraries/uart/app_uart_fifo.c" left="0" top="41" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="529" useTextEdit="1" path="../../../../nRF5_SDK_17.1.0_ddde560/integration/nrfx/legacy/nrf_drv_uart.h" left="0" top="497" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="1" y="37" useTextEdit="1" path="src/custom_twi.c" left="0" top="11" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="57" useTextEdit="1" openedFrom="D:/PJ_FreeRTOS/nrf52-mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/server_freertos_module/src/main.c" path="src/MAX30205_temp_drv.c" left="0" top="22" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="1" y="57" useTextEdit="1" openedFrom="D:/PJ_FreeRTOS/nrf52-mesh/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/server_freertos_module/src/main.c" path="src/MAX30205_temp_drv.c" left="0" top="16" codecName="Default"/>
  </Files>
- <EMStudioWindow activeProject="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="D:/PJ_FreeRTOS/nrf52-mesh/nRF5_SDK_17.1.0_ddde560/integration/nrfx/legacy" debugSearchPath="" autoConnectCapabilities="3711"/>
+ <EMStudioWindow activeProject="light_switch_server_freertos_module_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="D:/PJ_FreeRTOS/nrf52-mesh/nRF5_SDK_17.1.0_ddde560/integration/nrfx/legacy" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

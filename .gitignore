@@ -8,5 +8,6 @@
 
 *.emSession
 
+
 nrf5_sdk_for_mesh_v5.0.0_src/**/build/
 nrf5_sdk_for_mesh_v5.0.0_src/**/linker/

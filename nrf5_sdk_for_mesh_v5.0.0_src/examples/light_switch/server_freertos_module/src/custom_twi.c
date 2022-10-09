@@ -33,7 +33,8 @@ void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context)
             m_xfer_done = true;//置位传输完成标志
             break;
 
-        default:break;
+        default:
+            break;
     }
 }
 
@@ -49,11 +50,11 @@ void twi_init(void)
        .scl                = CUSTOM_SCL_PIN,
        .sda                = CUSTOM_SDA_PIN,
        .frequency          = NRF_DRV_TWI_FREQ_100K,
-       .interrupt_priority = APP_IRQ_PRIORITY_HIGH,
+       .interrupt_priority = APP_IRQ_PRIORITY_LOW,
        .clear_bus_init     = false
     };
 
-    err_code = nrf_drv_twi_init(&m_twi, &twi_config, twi_handler, NULL);  //无回调函数，工作在阻塞模式
+    err_code = nrf_drv_twi_init(&m_twi, &twi_config, NULL/*twi_handler*/, NULL);  //无回调函数，工作在阻塞模式
     APP_ERROR_CHECK(err_code);
 
     nrf_drv_twi_enable(&m_twi);
@@ -72,7 +73,7 @@ bool twi_reg_write(uint8_t dev_addr, uint8_t reg_addr, uint8_t value)  //写寄�
     m_xfer_done = false;
 
     err_code = nrf_drv_twi_tx(&m_twi, dev_addr, tx_buff, 2, false);   //发送，不开启no_stop
-    while(m_xfer_done == false){}
+    //while(m_xfer_done == false){}
     if(NRF_SUCCESS != err_code){
         return false;
     }
@@ -84,8 +85,9 @@ bool twi_reg_read(uint8_t dev_addr, uint8_t reg_addr, uint8_t *dest, uint8_t len
     ret_code_t err_code;
     m_xfer_done = false;
 
+    
     err_code = nrf_drv_twi_tx(&m_twi, dev_addr, &reg_addr, 1, true);   //发送，开启no_stop
-    while (m_xfer_done == false){}
+    //while (m_xfer_done == false){}
     if(NRF_SUCCESS != err_code){
         return false;
     }
@@ -93,7 +95,7 @@ bool twi_reg_read(uint8_t dev_addr, uint8_t reg_addr, uint8_t *dest, uint8_t len
     m_xfer_done = false;
 
     err_code = nrf_drv_twi_rx(&m_twi, dev_addr, dest, length);
-    while (m_xfer_done == false){}
+    //while (m_xfer_done == false){}
     if(NRF_SUCCESS != err_code){
         return false;
     }

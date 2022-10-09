@@ -54,6 +54,7 @@ static bool max30102_verify(void)
 }
 
 
+
 bool max30102_init(void)
 { 
     uint8_t data;
@@ -77,7 +78,7 @@ bool max30102_init(void)
 
     max30102_i2c_write(MODE_CONFIGURATION,0x03);  //MODE configuration:SpO2 mode
 
-    max30102_i2c_write(SPO2_CONFIGURATION,0x2A); //SpO2 configuration:ACD resolution:15.63pA,sample rate control:200Hz, LED pulse width:215 us 
+    max30102_i2c_write(SPO2_CONFIGURATION,0x2A); // 0b00100110  SpO2 configuration:ACD resolution:15.63pA,sample rate control:200Hz, LED pulse width:215 us ,对应实际采样率为50Hz
 
     max30102_i2c_write(LED1_PULSE_AMPLITUDE,0x2f);	//IR LED
     max30102_i2c_write(LED2_PULSE_AMPLITUDE,0x2f); //RED LED current
@@ -139,7 +140,7 @@ uint16_t max30102_getHeartRate(float *input_data,uint16_t cache_nums)
     }
     if((temp>14)&&(temp<100))
     {
-        return 6000/temp;  //60/temp间隔/采样率
+        return 3000/temp;  //60/temp间隔/采样率
     }
     else
     {

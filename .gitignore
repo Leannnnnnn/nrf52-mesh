@@ -5,6 +5,7 @@
 *.o
 *.obj
 *.d
+*.zip
 
 *.emSession
 

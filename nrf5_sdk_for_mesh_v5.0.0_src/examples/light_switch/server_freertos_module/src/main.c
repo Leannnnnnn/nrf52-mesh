@@ -42,6 +42,8 @@
 #include "boards.h"
 #include "simple_hal.h"
 #include "app_timer.h"
+#include <nrfx_pdm.h>
+
 
 /* FreeRTOS and dependencies */
 #include "FreeRTOS.h"
@@ -95,9 +97,11 @@
 
 
 /* 模块调试开关 */
-#define MAX30205_EN 1
-#define MAX30102_EN 1
-#define ICM42688_EN 1 
+#define MAX30205_EN 0
+#define MAX30102_EN 0
+#define ICM42688_EN 0
+
+#define MP34DT05    1
 
 
 /* Custom static variables */
@@ -515,6 +519,13 @@ static void sensor_process_thread(void)
         */
         
 #endif
+
+#if MP34DT05
+
+
+
+#endif
+
         vTaskDelay(10);  //延迟单位ms
     }
 
@@ -564,13 +575,46 @@ static void heartRate_process_thread(void)
     }
 }
 
-
-
 /**********************************Function thread program********************************************/
 
 
 
-/*************************************************************************************************/
+#define PDM_BUF_SIZE 256
+
+int16_t pdm_buf[PDM_BUF_SIZE];
+
+void nrfx_pdm_event_handler(nrfx_pdm_evt_t const * const p_evt)
+{
+    if(p_evt->buffer_requested)
+    {
+        nrfx_pdm_buffer_set(pdm_buf, PDM_BUF_SIZE);
+    }
+    if(p_evt->buffer_released != 0)
+    {
+        sprintf(temp_str, "%d,%d\n", (uint16_t)pdm_buf[0], (uint16_t)pdm_buf[1]);
+        uart_send_str(temp_str);
+        __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, temp_str);
+    }
+}
+
+static void pdm_init(void)
+{
+    nrfx_pdm_config_t pdm_config = /*NRFX_PDM_DEFAULT_CONFIG(3,4);*/
+                                {                                                                     \
+                                    .mode               = PDM_MODE_OPERATION_Mono,       \
+                                    .edge               = PDM_MODE_EDGE_LeftFalling,       \
+                                    .pin_clk            = 3,                                   \
+                                    .pin_din            = 4,                                   \
+                                    .clock_freq         = NRF_PDM_FREQ_1067K, \
+                                    .gain_l             = NRF_PDM_GAIN_DEFAULT,                       \
+                                    .gain_r             = NRF_PDM_GAIN_DEFAULT,                       \
+                                    .interrupt_priority = NRFX_PDM_CONFIG_IRQ_PRIORITY                \
+                                };
+    nrfx_pdm_init(&pdm_config, nrfx_pdm_event_handler);
+   
+}
+
+
 
 static void initialize(void)
 {
@@ -625,6 +669,13 @@ static void initialize(void)
     else{
         __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "icm42688 initiated!\n");
     }
+#endif
+
+#if MP34DT05
+    pdm_init();  //pdm麦克风初始化
+
+    nrfx_pdm_start();
+
 #endif
     
 

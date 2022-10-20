@@ -40,7 +40,7 @@
 
 #include <nrfx.h>
 
-#if NRFX_CHECK(NRFX_PDM_ENABLED)
+//#if NRFX_CHECK(NRFX_PDM_ENABLED)
 
 #include <nrfx_pdm.h>
 #include <hal/nrf_gpio.h>
@@ -367,4 +367,4 @@ nrfx_err_t nrfx_pdm_stop(void)
     return err_code;
 }
 
-#endif // NRFX_CHECK(NRFX_PDM_ENABLED)
+//#endif // NRFX_CHECK(NRFX_PDM_ENABLED)

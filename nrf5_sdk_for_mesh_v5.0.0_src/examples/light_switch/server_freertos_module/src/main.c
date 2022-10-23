@@ -591,9 +591,11 @@ void nrfx_pdm_event_handler(nrfx_pdm_evt_t const * const p_evt)
     }
     if(p_evt->buffer_released != 0)
     {
-        sprintf(temp_str, "%d,%d\n", (uint16_t)pdm_buf[0], (uint16_t)pdm_buf[1]);
+        //if(((uint16_t)pdm_buf[0]<10000)&&((uint16_t)pdm_buf[1]<10000)){
+        sprintf(temp_str, "%d,%d\n",(uint16_t)pdm_buf[0], (uint16_t)pdm_buf[1]);
         uart_send_str(temp_str);
         __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, temp_str);
+        //}
     }
 }
 
@@ -602,7 +604,7 @@ static void pdm_init(void)
     nrfx_pdm_config_t pdm_config = /*NRFX_PDM_DEFAULT_CONFIG(3,4);*/
                                 {                                                                     \
                                     .mode               = PDM_MODE_OPERATION_Mono,       \
-                                    .edge               = PDM_MODE_EDGE_LeftFalling,       \
+                                    .edge               = PDM_MODE_EDGE_LeftRising,       \
                                     .pin_clk            = 3,                                   \
                                     .pin_din            = 4,                                   \
                                     .clock_freq         = NRF_PDM_FREQ_1067K, \

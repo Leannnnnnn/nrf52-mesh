@@ -52,7 +52,7 @@ void uart_init(void)
                          16,
                          256,
                          uart_evt_handle,
-                         APP_IRQ_PRIORITY_LOW,
+                         APP_IRQ_PRIORITY_LOW_MID,
                          err_code);
     APP_ERROR_CHECK(err_code);
     __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Uart init successfully! \n");

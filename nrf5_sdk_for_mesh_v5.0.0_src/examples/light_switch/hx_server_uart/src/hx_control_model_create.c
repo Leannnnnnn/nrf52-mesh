@@ -18,8 +18,7 @@ static void hx_model_server_tx_cb(const hx_model_server_t * p_self, const uint8_
 {
     uint8_t* message = (uint8_t*)malloc(sizeof(uint8_t)*length);
     memcpy(message,p_data,length);
-    __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Received Data: %s, Data Length: %d\n",
-                                    message, length);
+    __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Received Data: %s, Data Length: %d\n", message, length);
     message[length] = 0x00;  //多余数据截断
     uart_send_str(message);
     free(message);                                       

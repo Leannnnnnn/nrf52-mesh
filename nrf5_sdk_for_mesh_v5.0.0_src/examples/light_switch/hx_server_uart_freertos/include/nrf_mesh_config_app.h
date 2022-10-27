@@ -47,32 +47,6 @@
  */
 
 /**
- * @defgroup MESH_FREERTOS FreeRTOS/Mesh configuration
- *
- * @{
- */
-
-/** Set this to 1 to resume the Mesh processing task in the FreeRTOS idle handler instead
- *  of resuming it in the bearer_event signal handler
- */
-#define MESH_FREERTOS_IDLE_HANDLER_RESUME   0
-
-/** The stack depth used for the Mesh processing task.
- *  The actual stack allocated is equal to MESH_FREERTOS_TASK_STACK_DEPTH * sizeof(StackType_t)
- *  May have to be increased for some use cases.
- */
-#define MESH_FREERTOS_TASK_STACK_DEPTH      2048
-
-/** The FreeRTOS task priority used for the Mesh processing task.
- *  Should not have to be modified.
- *  It is important that this is not lower than the priority of the SoftDevice Handler
- *  task in nrf_sdh_freertos.c as that will cause issues with GATT provisioning.
- */
-#define MESH_FREERTOS_TASK_PRIO             2
-
-/** @} end of MESH_FREERTOS */
-
-/**
  * @defgroup DEVICE_CONFIG Device configuration
  *
  * @{
@@ -112,7 +86,7 @@
                             1 + /* Default Transition Time Server               */ \
                             1 + /* Scene Server                                 */ \
                             1 + /* Scene Setup Server (extends Scene Server)    */ \
-                            0   /* hx control model */ )
+                            1   /* hx control model */ )
 
 /**
  * The number of elements in the application.
@@ -222,7 +196,7 @@
  *
  * @{
  */
-#define GAP_DEVICE_NAME                 "FreeRTOS Mesh Light"
+#define GAP_DEVICE_NAME                 "nRF5x Mesh Light hx"
 /** @} end of BLE_SOFTDEVICE_SUPPORT_CONFIG */
 
 /** @} end of NRF_MESH_CONFIG_CORE */

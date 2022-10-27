@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 - 2020, Nordic Semiconductor ASA
+ * Copyright (c) 2017 - 2019, Nordic Semiconductor ASA
  *
  * All rights reserved.
  *
@@ -2395,6 +2395,99 @@
 
 // <h> nRF_Drivers
 
+// <e> NRFX_PRS_ENABLED - nrfx_prs - Peripheral Resource Sharing module
+//==========================================================
+#ifndef NRFX_PRS_ENABLED
+#define NRFX_PRS_ENABLED 1
+#endif
+// <q> NRFX_PRS_BOX_0_ENABLED  - Enables box 0 in the module.
+ 
+
+#ifndef NRFX_PRS_BOX_0_ENABLED
+#define NRFX_PRS_BOX_0_ENABLED 0
+#endif
+
+// <q> NRFX_PRS_BOX_1_ENABLED  - Enables box 1 in the module.
+ 
+
+#ifndef NRFX_PRS_BOX_1_ENABLED
+#define NRFX_PRS_BOX_1_ENABLED 0
+#endif
+
+// <q> NRFX_PRS_BOX_2_ENABLED  - Enables box 2 in the module.
+ 
+
+#ifndef NRFX_PRS_BOX_2_ENABLED
+#define NRFX_PRS_BOX_2_ENABLED 1
+#endif
+
+// <q> NRFX_PRS_BOX_3_ENABLED  - Enables box 3 in the module.
+ 
+
+#ifndef NRFX_PRS_BOX_3_ENABLED
+#define NRFX_PRS_BOX_3_ENABLED 0
+#endif
+
+// <q> NRFX_PRS_BOX_4_ENABLED  - Enables box 4 in the module.
+ 
+
+#ifndef NRFX_PRS_BOX_4_ENABLED
+#define NRFX_PRS_BOX_4_ENABLED 1
+#endif
+
+// <e> NRFX_PRS_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef NRFX_PRS_CONFIG_LOG_ENABLED
+#define NRFX_PRS_CONFIG_LOG_ENABLED 0
+#endif
+// <o> NRFX_PRS_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef NRFX_PRS_CONFIG_LOG_LEVEL
+#define NRFX_PRS_CONFIG_LOG_LEVEL 3
+#endif
+
+// <o> NRFX_PRS_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef NRFX_PRS_CONFIG_INFO_COLOR
+#define NRFX_PRS_CONFIG_INFO_COLOR 0
+#endif
+
+// <o> NRFX_PRS_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef NRFX_PRS_CONFIG_DEBUG_COLOR
+#define NRFX_PRS_CONFIG_DEBUG_COLOR 0
+#endif
+
+// </e>
+
+// </e>
+
 //==========================================================
 // <e> COMP_ENABLED - nrf_drv_comp - COMP peripheral driver - legacy layer
 //==========================================================
@@ -2496,11 +2589,11 @@
 // <e> GPIOTE_ENABLED - nrf_drv_gpiote - GPIOTE peripheral driver - legacy layer
 //==========================================================
 #ifndef GPIOTE_ENABLED
-#define GPIOTE_ENABLED 1
+#define GPIOTE_ENABLED 0
 #endif
 // <o> GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS - Number of lower power input pins
 #ifndef GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS
-#define GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS 4
+#define GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS 1
 #endif
 
 // <o> GPIOTE_CONFIG_IRQ_PRIORITY  - Interrupt priority
@@ -5424,7 +5517,7 @@
 // <e> NRFX_UART_ENABLED - nrfx_uart - UART peripheral driver
 //==========================================================
 #ifndef NRFX_UART_ENABLED
-#define NRFX_UART_ENABLED 0
+#define NRFX_UART_ENABLED 1
 #endif
 // <o> NRFX_UART0_ENABLED - Enable UART0 instance
 #ifndef NRFX_UART0_ENABLED
@@ -6784,7 +6877,7 @@
 // <e> UART_ENABLED - nrf_drv_uart - UART/UARTE peripheral driver - legacy layer
 //==========================================================
 #ifndef UART_ENABLED
-#define UART_ENABLED 0
+#define UART_ENABLED 1
 #endif
 // <o> UART_DEFAULT_CONFIG_HWFC  - Hardware Flow Control
 
@@ -6861,7 +6954,7 @@
 // <e> UART0_ENABLED - Enable UART0 instance
 //==========================================================
 #ifndef UART0_ENABLED
-#define UART0_ENABLED 0
+#define UART0_ENABLED 1
 #endif
 // <q> UART0_CONFIG_USE_EASY_DMA  - Default setting for using EasyDMA
 
@@ -7002,6 +7095,32 @@
 //==========================================================
 
 // <h> nRF_Libraries
+
+
+
+// <e> APP_UART_ENABLED - app_uart - UART driver
+//==========================================================
+#ifndef APP_UART_ENABLED
+#define APP_UART_ENABLED 1
+#endif
+// <o> APP_UART_DRIVER_INSTANCE  - UART instance used
+ 
+// <0=> 0 
+
+#ifndef APP_UART_DRIVER_INSTANCE
+#define APP_UART_DRIVER_INSTANCE 0
+#endif
+
+// </e>
+
+
+// <q> APP_FIFO_ENABLED  - app_fifo - Software FIFO implementation
+ 
+
+#ifndef APP_FIFO_ENABLED
+#define APP_FIFO_ENABLED 1
+#endif
+
 
 //==========================================================
 // <q> APP_GPIOTE_ENABLED  - app_gpiote - GPIOTE events dispatcher
@@ -8480,6 +8599,12 @@
 // </h>
 //==========================================================
 
+// <q> RETARGET_ENABLED  - retarget - Retargeting stdio functions
+ 
+#ifndef RETARGET_ENABLED
+#define RETARGET_ENABLED 0
+#endif
+
 // <h> nrf_fprintf - fprintf function.
 
 //==========================================================
@@ -8996,7 +9121,7 @@
 // <4=> Debug
 
 #ifndef GPIOTE_CONFIG_LOG_LEVEL
-#define GPIOTE_CONFIG_LOG_LEVEL 4
+#define GPIOTE_CONFIG_LOG_LEVEL 3
 #endif
 
 // <o> GPIOTE_CONFIG_INFO_COLOR  - ANSI escape code prefix.
@@ -9978,7 +10103,7 @@
 // <4=> Debug
 
 #ifndef APP_BUTTON_CONFIG_LOG_LEVEL
-#define APP_BUTTON_CONFIG_LOG_LEVEL 4
+#define APP_BUTTON_CONFIG_LOG_LEVEL 3
 #endif
 
 // <o> APP_BUTTON_CONFIG_INITIAL_LOG_LEVEL  - Initial severity level if dynamic filtering is enabled.
@@ -9994,7 +10119,7 @@
 // <4=> Debug
 
 #ifndef APP_BUTTON_CONFIG_INITIAL_LOG_LEVEL
-#define APP_BUTTON_CONFIG_INITIAL_LOG_LEVEL 4
+#define APP_BUTTON_CONFIG_INITIAL_LOG_LEVEL 3
 #endif
 
 // <o> APP_BUTTON_CONFIG_INFO_COLOR  - ANSI escape code prefix.
@@ -10430,7 +10555,7 @@
 // <4=> Debug
 
 #ifndef NRF_BALLOC_CONFIG_LOG_LEVEL
-#define NRF_BALLOC_CONFIG_LOG_LEVEL 4
+#define NRF_BALLOC_CONFIG_LOG_LEVEL 3
 #endif
 
 // <o> NRF_BALLOC_CONFIG_INITIAL_LOG_LEVEL  - Initial severity level if dynamic filtering is enabled.
@@ -10623,7 +10748,7 @@
 // <4=> Debug
 
 #ifndef NRF_BLOCK_DEV_RAM_CONFIG_LOG_LEVEL
-#define NRF_BLOCK_DEV_RAM_CONFIG_LOG_LEVEL 4
+#define NRF_BLOCK_DEV_RAM_CONFIG_LOG_LEVEL 3
 #endif
 
 // <o> NRF_BLOCK_DEV_RAM_CONFIG_LOG_INIT_FILTER_LEVEL  - Initial severity level if dynamic filtering is enabled
@@ -10890,7 +11015,7 @@
 // <4=> Debug
 
 #ifndef NRF_MEMOBJ_CONFIG_LOG_LEVEL
-#define NRF_MEMOBJ_CONFIG_LOG_LEVEL 4
+#define NRF_MEMOBJ_CONFIG_LOG_LEVEL 3
 #endif
 
 // <o> NRF_MEMOBJ_CONFIG_INFO_COLOR  - ANSI escape code prefix.
@@ -11106,7 +11231,7 @@
 // <4=> Debug
 
 #ifndef NRF_SDH_BLE_LOG_LEVEL
-#define NRF_SDH_BLE_LOG_LEVEL 4
+#define NRF_SDH_BLE_LOG_LEVEL 3
 #endif
 
 // <o> NRF_SDH_BLE_INFO_COLOR  - ANSI escape code prefix.
@@ -11157,7 +11282,7 @@
 // <4=> Debug
 
 #ifndef NRF_SDH_LOG_LEVEL
-#define NRF_SDH_LOG_LEVEL 4
+#define NRF_SDH_LOG_LEVEL 3
 #endif
 
 // <o> NRF_SDH_INFO_COLOR  - ANSI escape code prefix.
@@ -11208,7 +11333,7 @@
 // <4=> Debug
 
 #ifndef NRF_SDH_SOC_LOG_LEVEL
-#define NRF_SDH_SOC_LOG_LEVEL 4
+#define NRF_SDH_SOC_LOG_LEVEL 3
 #endif
 
 // <o> NRF_SDH_SOC_INFO_COLOR  - ANSI escape code prefix.
@@ -11361,7 +11486,7 @@
 // <4=> Debug
 
 #ifndef PM_LOG_LEVEL
-#define PM_LOG_LEVEL 4
+#define PM_LOG_LEVEL 3
 #endif
 
 // <o> PM_LOG_INFO_COLOR  - ANSI escape code prefix.

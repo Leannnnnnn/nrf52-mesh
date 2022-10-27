@@ -22,7 +22,7 @@
  *
  * 5. Any software provided in binary form under this license must not be reverse
  *    engineered, decompiled, modified and/or disassembled.
-*
+ *
  * THIS SOFTWARE IS PROVIDED BY NORDIC SEMICONDUCTOR ASA "AS IS" AND ANY EXPRESS
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -43,22 +43,19 @@
 #include "simple_hal.h"
 #include "app_timer.h"
 
-/* FreeRTOS and dependencies */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "nrf_sdh_freertos.h"
-#include "nrf_drv_clock.h"
+#include "custom_uart.h"
+
 
 /* Core */
 #include "nrf_mesh_config_core.h"
 #include "nrf_mesh_gatt.h"
 #include "nrf_mesh_configure.h"
+#include "nrf_mesh_events.h"
 #include "nrf_mesh.h"
 #include "mesh_stack.h"
 #include "device_state_manager.h"
 #include "access_config.h"
 #include "proxy.h"
-#include "bearer_event.h"
 
 /* Provisioning and configuration */
 #include "mesh_provisionee.h"
@@ -68,13 +65,13 @@
 #include "generic_onoff_server.h"
 #include "scene_setup_server.h"
 #include "model_config_file.h"
+#include "hx_control_model_create.h"
 
 /* Logging and RTT */
 #include "log.h"
 #include "rtt_input.h"
 
 /* Example specific includes */
-#include "nrf_sdh_soc.h"
 #include "app_config.h"
 #include "example_common.h"
 #include "nrf_mesh_config_examples.h"
@@ -83,7 +80,6 @@
 #include "ble_softdevice_support.h"
 #include "app_dtt.h"
 #include "app_scene.h"
-
 
 /*****************************************************************************
  * Definitions
@@ -100,6 +96,7 @@
 /*****************************************************************************
  * Forward declaration of static functions
  *****************************************************************************/
+static void mesh_events_handle(const nrf_mesh_evt_t * p_evt);
 static void app_onoff_server_set_cb(const app_onoff_server_t * p_server, bool onoff);
 static void app_onoff_server_get_cb(const app_onoff_server_t * p_server, bool * p_present_onoff);
 static void app_onoff_server_transition_cb(const app_onoff_server_t * p_server,
@@ -109,20 +106,14 @@ static void app_onoff_scene_transition_cb(const app_scene_setup_server_t * p_app
                                           uint32_t transition_time_ms,
                                           uint16_t target_scene);
 #endif
-static void start(void * p_device_provisioned);
-static void button_thread_notify(uint32_t button);
-
 /*****************************************************************************
  * Static variables
  *****************************************************************************/
 static bool m_device_provisioned;
-
-/* The handle for the Mesh processing task */
-static TaskHandle_t m_mesh_process_task;
-/* The handle for the button handler thread */
-static TaskHandle_t m_button_handler_thread;
-
-/*************************************************************************************************/
+static nrf_mesh_evt_handler_t m_event_handler =
+{
+    .evt_cb = mesh_events_handle,
+};
 
 #if SCENE_SETUP_SERVER_INSTANCES_MAX > 0
 /* Defaut Transition Time server structure definition and initialization */
@@ -189,7 +180,6 @@ static void app_model_init(void)
     ERROR_CHECK(app_onoff_init(&m_onoff_server_0, APP_ONOFF_ELEMENT_INDEX));
     __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "App OnOff Model Handle: %d\n", m_onoff_server_0.server.model_handle);
 
-
 #if SCENE_SETUP_SERVER_INSTANCES_MAX > 0
     /* Instantiate Generic Default Transition Time server as needed by Scene models */
     ERROR_CHECK(app_dtt_init(&m_dtt_server_0, APP_ONOFF_ELEMENT_INDEX));
@@ -201,10 +191,17 @@ static void app_model_init(void)
     ERROR_CHECK(app_onoff_scene_context_set(&m_onoff_server_0, &m_scene_server_0));
     __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "App Scene Model Handle: %d\n", m_scene_server_0.scene_setup_server.model_handle);
 #endif
-    
 }
 
 /*************************************************************************************************/
+
+static void mesh_events_handle(const nrf_mesh_evt_t * p_evt)
+{
+    if (p_evt->type == NRF_MESH_EVT_ENABLED)
+    {
+        APP_ERROR_CHECK(app_onoff_value_restore(&m_onoff_server_0));
+    }
+}
 
 static void node_reset(void)
 {
@@ -250,6 +247,7 @@ static void button_event_handler(uint32_t button_number)
             break;
         }
 
+          
         /* Initiate node reset */
         case 4:
         {
@@ -280,7 +278,7 @@ static void app_rtt_input_handler(int key)
     if (key >= '1' && key <= '4')
     {
         uint32_t button_number = key - '1';
-        button_thread_notify(button_number);
+        button_event_handler(button_number);
     }
     else
     {
@@ -329,13 +327,17 @@ static void models_init_cb(void)
 {
     __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Initializing and adding models\n");
     app_model_init();
+    hx_models_init();
 }
 
 static void mesh_init(void)
 {
+    /* Initialize the application storage for models */
+    model_config_file_init();
+
     mesh_stack_init_params_t init_params =
     {
-        .core.irq_priority       = NRF_MESH_IRQ_PRIORITY_THREAD,
+        .core.irq_priority       = NRF_MESH_IRQ_PRIORITY_LOWEST,
         .core.lfclksrc           = DEV_BOARD_LF_CLK_CFG,
         .core.p_uuid             = NULL,
         .models.models_init_cb   = models_init_cb,
@@ -343,17 +345,20 @@ static void mesh_init(void)
     };
 
     uint32_t status = mesh_stack_init(&init_params, &m_device_provisioned);
+
     if (status == NRF_SUCCESS)
     {
         /* Check if application stored data is valid, if not clear all data and use default values. */
         status = model_config_file_config_apply();
     }
+
     switch (status)
     {
         case NRF_ERROR_INVALID_DATA:
+            /* Clear model config file as loading failed */
             model_config_file_clear();
             __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Data in the persistent memory was corrupted. Device starts as unprovisioned.\n");
-			__LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Reset device before start provisioning.\n");
+            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Reboot device before starting of the provisioning process.\n");
             break;
         case NRF_SUCCESS:
             break;
@@ -429,6 +434,7 @@ static void mesh_freertos_trigger_event_callback(void)
 }
 #endif
 
+
 void vApplicationIdleHook( void )
 {
 #if MESH_FREERTOS_IDLE_HANDLER_RESUME
@@ -478,17 +484,18 @@ static uint32_t nrf_mesh_process_thread_init(void)
 
 /*************************************************************************************************/
 
+
 static void initialize(void)
 {
     __LOG_INIT(LOG_SRC_APP | LOG_SRC_FRIEND, LOG_LEVEL_DBG1, LOG_CALLBACK_DEFAULT);
-    __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "----- BLE Mesh Light Switch Server Demo -----\n");
+    __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "----- BLE Mesh Light Switch Server FreeRTOS Demo -----\n");
 
     ERROR_CHECK(app_timer_init());
     hal_leds_init();
     clock_init();
 
 #if BUTTON_BOARD
-    ERROR_CHECK(hal_buttons_init(button_thread_notify));
+    ERROR_CHECK(hal_buttons_init(button_event_handler));
 #endif
 
     ble_stack_init();
@@ -499,6 +506,8 @@ static void initialize(void)
 #endif
 
     mesh_init();
+    uart_init();
+    uart_send_str("Uart start.\r\n");
 
     // Set up the Mesh processing task for FreeRTOS
     ERROR_CHECK(nrf_mesh_process_thread_init());
@@ -512,14 +521,14 @@ static void initialize(void)
     // Create a FreeRTOS task for handling SoftDevice events.
     // That task will call the start function when the task is started.
     nrf_sdh_freertos_init(start, &m_device_provisioned);
+
 }
 
-static void start(void * p_device_provisioned)
+static void start(void)
 {
     bool device_provisioned = *(bool *)p_device_provisioned;
-
     rtt_input_enable(app_rtt_input_handler, RTT_INPUT_POLL_PERIOD_MS);
-    
+
     if (!device_provisioned)
     {
         static const uint8_t static_auth_data[NRF_MESH_KEY_SIZE] = STATIC_AUTH_DATA;
@@ -542,25 +551,24 @@ static void start(void * p_device_provisioned)
 
     mesh_app_uuid_print(nrf_mesh_configure_device_uuid_get());
 
+    /* NRF_MESH_EVT_ENABLED is triggered in the mesh IRQ context after the stack is fully enabled.
+     * This event is used to call Model APIs for establishing bindings and publish a model state information. */
+    nrf_mesh_evt_handler_add(&m_event_handler);
     ERROR_CHECK(mesh_stack_start());
 
     __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, m_usage_string);
 
-    hal_led_mask_set(LEDS_MASK, LED_MASK_STATE_OFF);
-    hal_led_blink_ms(LEDS_MASK, LED_BLINK_INTERVAL_MS, LED_BLINK_CNT_START);
+    hal_led_mask_set(HAL_LED_MASK_UPPER_HALF, LED_MASK_STATE_OFF);
+    hal_led_blink_ms(HAL_LED_MASK_UPPER_HALF, LED_BLINK_INTERVAL_MS, LED_BLINK_CNT_START);
 }
 
 int main(void)
 {
     initialize();
-
-    // Start the FreeRTOS scheduler.
-    vTaskStartScheduler();
+    start();
 
     for (;;)
     {
-        // The app should stay in the FreeRTOS scheduler loop and should never reach this point.
-        APP_ERROR_HANDLER(NRF_ERROR_FORBIDDEN);
+        (void)sd_app_evt_wait();
     }
 }
-

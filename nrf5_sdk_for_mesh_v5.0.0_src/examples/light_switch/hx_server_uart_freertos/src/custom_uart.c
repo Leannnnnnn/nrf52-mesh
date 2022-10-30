@@ -1,16 +1,9 @@
 
-/*-----------------------------------
- * 
- * 自定义uart串口初始化配置和传输函数
- *
- *----------------------------------*/
-
-
 
 #include <string.h>
-#include "boards.h"
 
 #include "custom_uart.h"
+#include "pca10056.h"
 #include "nrf_uart.h"
 #include "sdk_errors.h"
 #include "app_error.h"
@@ -52,7 +45,7 @@ void uart_init(void)
                          16,
                          256,
                          uart_evt_handle,
-                         APP_IRQ_PRIORITY_LOW_MID,
+                         APP_IRQ_PRIORITY_LOW,
                          err_code);
     APP_ERROR_CHECK(err_code);
     __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Uart init successfully! \n");

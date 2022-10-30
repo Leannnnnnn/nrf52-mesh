@@ -22,7 +22,7 @@
  *
  * 5. Any software provided in binary form under this license must not be reverse
  *    engineered, decompiled, modified and/or disassembled.
-*
+ *
  * THIS SOFTWARE IS PROVIDED BY NORDIC SEMICONDUCTOR ASA "AS IS" AND ANY EXPRESS
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -42,25 +42,20 @@
 #include "boards.h"
 #include "simple_hal.h"
 #include "app_timer.h"
-#include <nrfx_pdm.h>
 
+#include "custom_uart.h"
 
-/* FreeRTOS and dependencies */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "nrf_sdh_freertos.h"
-#include "nrf_drv_clock.h"
 
 /* Core */
 #include "nrf_mesh_config_core.h"
 #include "nrf_mesh_gatt.h"
 #include "nrf_mesh_configure.h"
+#include "nrf_mesh_events.h"
 #include "nrf_mesh.h"
 #include "mesh_stack.h"
 #include "device_state_manager.h"
 #include "access_config.h"
 #include "proxy.h"
-#include "bearer_event.h"
 
 /* Provisioning and configuration */
 #include "mesh_provisionee.h"
@@ -68,76 +63,23 @@
 
 /* Models */
 #include "generic_onoff_server.h"
+#include "scene_setup_server.h"
+#include "model_config_file.h"
+#include "hx_control_model_create.h"
 
 /* Logging and RTT */
 #include "log.h"
 #include "rtt_input.h"
 
 /* Example specific includes */
-#include "nrf_sdh_soc.h"
 #include "app_config.h"
 #include "example_common.h"
 #include "nrf_mesh_config_examples.h"
 #include "light_switch_example_common.h"
 #include "app_onoff.h"
 #include "ble_softdevice_support.h"
-
-
 #include "app_dtt.h"
 #include "app_scene.h"
-
-
-/* Custom Libraries */
-#include "custom_uart.h"
-#include "custom_twi.h"
-#include "MAX30205_temp_drv.h"
-#include "MAX30102.h"
-#include "max30102_fir.h"
-#include "ICM42688.h"
-
-
-/* 模块调试开关 */
-#define MAX30205_EN 0
-#define MAX30102_EN 0
-#define ICM42688_EN 0
-
-#define MP34DT05    1
-
-
-/* Custom static variables */
-#define CACHE_NUMS 150//缓存数
-#define PPG_DATA_THRESHOLD 100000 	//检测阈值
-
-float ppg_data_cache_RED[CACHE_NUMS]={0};  //缓存区
-float ppg_data_cache_IR[CACHE_NUMS]={0};  //缓存区
-
-static float temperature = 0.0;
-float max30102_data[2],fir_output[2];
-
-icm42688_raw_acce_value_t raw_acceXYZ;
-icm42688_raw_gyro_value_t raw_gyroXYZ;
-
-static uint8_t temp_str[30];
-
-
-#define SENSOR_PROCESS_THREAD_STACK_SIZE     (512)
-#define HEARTRATE_PROCESS_THREAD_STACK_SIZE  (512)
-#define BUTTON_HANDLER_THREAD_STACK_SIZE     (512)
-
-#define SENSOR_PROCESS_THREAD_PRIORITY       (1)
-#define HEARTRATE_PROCESS_THREAD_PRIORITY    (2)
-#define BUTTON_HANDLER_THREAD_PRIORITY       (1)
-
-static TaskHandle_t m_mesh_process_task;  /* The handle for the Mesh processing task */
-static TaskHandle_t m_button_handler_thread;  /* The handle for the button handler thread */
-static TaskHandle_t m_heartRate_process_thread;  /* The handle for heartRate sensors processing thread */
-static TaskHandle_t m_sensor_process_thread;  /* The handle for other sensors processing thread */
-
-
-/*************************************************************************************************/
-
-
-
 
 /*****************************************************************************
  * Definitions
@@ -154,20 +96,39 @@ static TaskHandle_t m_sensor_process_thread;  /* The handle for other sensors pr
 /*****************************************************************************
  * Forward declaration of static functions
  *****************************************************************************/
+static void mesh_events_handle(const nrf_mesh_evt_t * p_evt);
 static void app_onoff_server_set_cb(const app_onoff_server_t * p_server, bool onoff);
 static void app_onoff_server_get_cb(const app_onoff_server_t * p_server, bool * p_present_onoff);
 static void app_onoff_server_transition_cb(const app_onoff_server_t * p_server,
                                                 uint32_t transition_time_ms, bool target_onoff);
-
-static void start(void * p_device_provisioned);
-static void button_thread_notify(uint32_t button);
-
+#if SCENE_SETUP_SERVER_INSTANCES_MAX > 0
+static void app_onoff_scene_transition_cb(const app_scene_setup_server_t * p_app,
+                                          uint32_t transition_time_ms,
+                                          uint16_t target_scene);
+#endif
 /*****************************************************************************
  * Static variables
  *****************************************************************************/
 static bool m_device_provisioned;
+static nrf_mesh_evt_handler_t m_event_handler =
+{
+    .evt_cb = mesh_events_handle,
+};
 
+#if SCENE_SETUP_SERVER_INSTANCES_MAX > 0
+/* Defaut Transition Time server structure definition and initialization */
+APP_DTT_SERVER_DEF(m_dtt_server_0,
+                   APP_FORCE_SEGMENTATION,
+                   APP_MIC_SIZE,
+                   NULL)
 
+/* Scene Setup server structure definition and initialization */
+APP_SCENE_SETUP_SERVER_DEF(m_scene_server_0,
+                           APP_FORCE_SEGMENTATION,
+                           APP_MIC_SIZE,
+                           app_onoff_scene_transition_cb,
+                           &m_dtt_server_0.server)
+#endif
 
 /* Generic OnOff server structure definition and initialization */
 APP_ONOFF_SERVER_DEF(m_onoff_server_0,
@@ -203,19 +164,50 @@ static void app_onoff_server_transition_cb(const app_onoff_server_t * p_server,
                                        transition_time_ms, target_onoff);
 }
 
+#if SCENE_SETUP_SERVER_INSTANCES_MAX > 0
+static void app_onoff_scene_transition_cb(const app_scene_setup_server_t * p_app,
+                                          uint32_t transition_time_ms,
+                                          uint16_t target_scene)
+{
+    __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Transition time: %d, Target Scene: %d\n",
+                                       transition_time_ms, target_scene);
+}
+#endif
+
 static void app_model_init(void)
 {
     /* Instantiate onoff server on element index APP_ONOFF_ELEMENT_INDEX */
     ERROR_CHECK(app_onoff_init(&m_onoff_server_0, APP_ONOFF_ELEMENT_INDEX));
     __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "App OnOff Model Handle: %d\n", m_onoff_server_0.server.model_handle);
+
+#if SCENE_SETUP_SERVER_INSTANCES_MAX > 0
+    /* Instantiate Generic Default Transition Time server as needed by Scene models */
+    ERROR_CHECK(app_dtt_init(&m_dtt_server_0, APP_ONOFF_ELEMENT_INDEX));
+    __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "App DTT Model Handle: %d\n", m_dtt_server_0.server.model_handle);
+
+    /* Instantiate scene server and register onoff server to have scene support */
+    ERROR_CHECK(app_scene_model_init(&m_scene_server_0, APP_ONOFF_ELEMENT_INDEX));
+    ERROR_CHECK(app_scene_model_add(&m_scene_server_0, &m_onoff_server_0.scene_if));
+    ERROR_CHECK(app_onoff_scene_context_set(&m_onoff_server_0, &m_scene_server_0));
+    __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "App Scene Model Handle: %d\n", m_scene_server_0.scene_setup_server.model_handle);
+#endif
 }
 
 /*************************************************************************************************/
 
+static void mesh_events_handle(const nrf_mesh_evt_t * p_evt)
+{
+    if (p_evt->type == NRF_MESH_EVT_ENABLED)
+    {
+        APP_ERROR_CHECK(app_onoff_value_restore(&m_onoff_server_0));
+    }
+}
+
 static void node_reset(void)
 {
     __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "----- Node reset  -----\n");
-    hal_led_blink_ms(LEDS_MASK, LED_BLINK_INTERVAL_MS, LED_BLINK_CNT_RESET);
+    model_config_file_clear();
+    hal_led_blink_ms(HAL_LED_MASK, LED_BLINK_INTERVAL_MS, LED_BLINK_CNT_RESET);
     /* This function may return if there are ongoing flash operations. */
     mesh_stack_device_reset();
 }
@@ -255,6 +247,7 @@ static void button_event_handler(uint32_t button_number)
             break;
         }
 
+          
         /* Initiate node reset */
         case 4:
         {
@@ -285,7 +278,7 @@ static void app_rtt_input_handler(int key)
     if (key >= '1' && key <= '4')
     {
         uint32_t button_number = key - '1';
-        button_thread_notify(button_number);
+        button_event_handler(button_number);
     }
     else
     {
@@ -295,8 +288,8 @@ static void app_rtt_input_handler(int key)
 
 static void device_identification_start_cb(uint8_t attention_duration_s)
 {
-    hal_led_mask_set(LEDS_MASK, false);
-    hal_led_blink_ms(BSP_LED_2_MASK  | BSP_LED_3_MASK,
+    hal_led_mask_set(HAL_LED_MASK, false);
+    hal_led_blink_ms(HAL_LED_MASK_HALF,
                      LED_BLINK_ATTENTION_INTERVAL_MS,
                      LED_BLINK_ATTENTION_COUNT(attention_duration_s));
 }
@@ -326,21 +319,25 @@ static void provisioning_complete_cb(void)
 
     unicast_address_print();
     hal_led_blink_stop();
-    hal_led_mask_set(LEDS_MASK, LED_MASK_STATE_OFF);
-    hal_led_blink_ms(LEDS_MASK, LED_BLINK_INTERVAL_MS, LED_BLINK_CNT_PROV);
+    hal_led_mask_set(HAL_LED_MASK, LED_MASK_STATE_OFF);
+    hal_led_blink_ms(HAL_LED_MASK, LED_BLINK_INTERVAL_MS, LED_BLINK_CNT_PROV);
 }
 
 static void models_init_cb(void)
 {
     __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Initializing and adding models\n");
     app_model_init();
+    hx_models_init();
 }
 
 static void mesh_init(void)
 {
+    /* Initialize the application storage for models */
+    model_config_file_init();
+
     mesh_stack_init_params_t init_params =
     {
-        .core.irq_priority       = NRF_MESH_IRQ_PRIORITY_THREAD,
+        .core.irq_priority       = NRF_MESH_IRQ_PRIORITY_LOWEST,
         .core.lfclksrc           = DEV_BOARD_LF_CLK_CFG,
         .core.p_uuid             = NULL,
         .models.models_init_cb   = models_init_cb,
@@ -348,11 +345,20 @@ static void mesh_init(void)
     };
 
     uint32_t status = mesh_stack_init(&init_params, &m_device_provisioned);
+
+    if (status == NRF_SUCCESS)
+    {
+        /* Check if application stored data is valid, if not clear all data and use default values. */
+        status = model_config_file_config_apply();
+    }
+
     switch (status)
     {
         case NRF_ERROR_INVALID_DATA:
+            /* Clear model config file as loading failed */
+            model_config_file_clear();
             __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Data in the persistent memory was corrupted. Device starts as unprovisioned.\n");
-			__LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Reset device before start provisioning.\n");
+            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Reboot device before starting of the provisioning process.\n");
             break;
         case NRF_SUCCESS:
             break;
@@ -428,6 +434,7 @@ static void mesh_freertos_trigger_event_callback(void)
 }
 #endif
 
+
 void vApplicationIdleHook( void )
 {
 #if MESH_FREERTOS_IDLE_HANDLER_RESUME
@@ -475,160 +482,20 @@ static uint32_t nrf_mesh_process_thread_init(void)
     return NRF_SUCCESS;
 }
 
-
-/**********************************Function thread program********************************************/
-static void sensor_process_thread(void)
-{
-    static int i = 0;
-    /*
-#if MAX30102_EN 
-    uint16_t cache_counter=0;  //缓存计数器
-#endif
-    */
-    for(;;){
-#if MAX30205_EN 
-        i++;
-        if(i == 100){  //降低采样频率
-            i = 0;
-            temperature = temp_read();
-            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Temp is %d\n", (int)(temperature*100));
-        }
-#endif
-
-
-#if ICM42688_EN
-        if(true == icm42688_get_raw_acce(&raw_acceXYZ)){ 
-            //__LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "%d,%d,%d\n",raw_acceXYZ.raw_acce_x, raw_acceXYZ.raw_acce_y, raw_acceXYZ.raw_acce_z);
-            sprintf(temp_str, "%d,%d,%d\n", raw_acceXYZ.raw_acce_x, raw_acceXYZ.raw_acce_y, raw_acceXYZ.raw_acce_z);
-            //uart_send_str(temp_str);
-        }
-        else{
-            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "icm42688 not found!\n");
-            //icm42688_init();  //重新初始化
-        }
-        
-        /*
-        if(true == icm42688_get_raw_gyro(&raw_gyroXYZ)){ 
-            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "%d,%d,%d\n", raw_gyroXYZ.raw_gyro_x, raw_gyroXYZ.raw_gyro_y, raw_gyroXYZ.raw_gyro_z);
-            sprintf(temp_str, "%d,%d,%d\n", raw_gyroXYZ.raw_gyro_x, raw_gyroXYZ.raw_gyro_y, raw_gyroXYZ.raw_gyro_z);
-            uart_send_str(temp_str);
-        }
-        else{
-            __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "icm42688 not found!\n");
-        }
-        */
-        
-#endif
-
-#if MP34DT05
-
-
-
-#endif
-
-        vTaskDelay(10);  //延迟单位ms
-    }
-
-} 
-
-
-
-static void heartRate_process_thread(void)
-{
-#if MAX30102_EN 
-    uint16_t cache_counter=0;  //缓存计数器
-#endif
-    for(;;){
-#if MAX30102_EN 
-        if(nrf_gpio_pin_read(PIN_INT) == 0)			//中断信号产生
-        {
-            hr_flag_clear();
-            max30102_fifo_read(max30102_data);		//读取数据
-            max30102_i2c_write(INTERRUPT_ENABLE1,0xE0); //恢复中断
-            ir_max30102_fir(&max30102_data[0],&fir_output[0]);
-            red_max30102_fir(&max30102_data[1],&fir_output[1]);  //滤波
-    
-            sprintf(temp_str, "%d,%d\n", (int32_t)(max30102_data[0]*100), (int32_t)(fir_output[0]*100));
-            uart_send_str(temp_str);
-
-            if((max30102_data[0]>PPG_DATA_THRESHOLD)&&(max30102_data[1]>PPG_DATA_THRESHOLD))  //大于阈值，说明传感器有接触
-            {		
-                ppg_data_cache_IR[cache_counter]=fir_output[0];
-                ppg_data_cache_RED[cache_counter]=fir_output[1];
-                cache_counter++;
-            }
-            else				//小于阈值
-            {
-                cache_counter=0;
-                __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "No finger!\n");
-            }
-
-            if(cache_counter>=CACHE_NUMS)  //收集满了数据
-            {
-                __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "Heart rate: %d  /min\n ",max30102_getHeartRate(ppg_data_cache_IR,CACHE_NUMS));
-                __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "SpO2: %d  %%\n", (int32_t)(max30102_getSpO2(ppg_data_cache_IR,ppg_data_cache_RED,CACHE_NUMS)*10));
-                cache_counter=0;
-            }
-        }
-#endif
-        vTaskDelay(5);  //延迟单位ms
-    }
-}
-
-/**********************************Function thread program********************************************/
-
-
-
-#define PDM_BUF_SIZE 256
-
-int16_t pdm_buf[PDM_BUF_SIZE];
-
-void nrfx_pdm_event_handler(nrfx_pdm_evt_t const * const p_evt)
-{
-    if(p_evt->buffer_requested)
-    {
-        nrfx_pdm_buffer_set(pdm_buf, PDM_BUF_SIZE);
-    }
-    if(p_evt->buffer_released != 0)
-    {
-        //if(((uint16_t)pdm_buf[0]<10000)&&((uint16_t)pdm_buf[1]<10000)){
-        sprintf(temp_str, "%d,%d\n",pdm_buf[0], pdm_buf[1]);
-        uart_send_str(temp_str);
-        __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, temp_str);
-        //}
-    }
-}
-
-static void pdm_init(void)
-{
-    nrfx_pdm_config_t pdm_config = /*NRFX_PDM_DEFAULT_CONFIG(3,4);*/
-                                {                                                                     \
-                                    .mode               = PDM_MODE_OPERATION_Mono,       \
-                                    .edge               = PDM_MODE_EDGE_LeftRising,       \
-                                    .pin_clk            = 3,                                   \
-                                    .pin_din            = 4,                                   \
-                                    .clock_freq         = PDM_PDMCLKCTRL_FREQ_1280K, \
-                                    .gain_l             = NRF_PDM_GAIN_DEFAULT,                       \
-                                    .gain_r             = NRF_PDM_GAIN_DEFAULT,                       \
-                                    .interrupt_priority = NRFX_PDM_CONFIG_IRQ_PRIORITY                \
-                                };
-    nrfx_pdm_init(&pdm_config, nrfx_pdm_event_handler);
-   
-}
-
+/*************************************************************************************************/
 
 
 static void initialize(void)
 {
     __LOG_INIT(LOG_SRC_APP | LOG_SRC_FRIEND, LOG_LEVEL_DBG1, LOG_CALLBACK_DEFAULT);
-    __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "----- BLE Mesh Light Switch Server Demo -----\n");
+    __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "----- BLE Mesh Light Switch Server FreeRTOS Demo -----\n");
 
     ERROR_CHECK(app_timer_init());
     hal_leds_init();
     clock_init();
 
 #if BUTTON_BOARD
-    ERROR_CHECK(hal_buttons_init(button_thread_notify));
+    ERROR_CHECK(hal_buttons_init(button_event_handler));
 #endif
 
     ble_stack_init();
@@ -639,92 +506,29 @@ static void initialize(void)
 #endif
 
     mesh_init();
+    uart_init();
+    uart_send_str("Uart start.\r\n");
 
     // Set up the Mesh processing task for FreeRTOS
     ERROR_CHECK(nrf_mesh_process_thread_init());
 
-    uart_init();
-    uart_send_str("Uart start.\r\n");
-    twi_init();
-
-#if MAX30205_EN
-    temp_init();
-#endif
-
-
-#if MAX30102_EN
-    if(true != max30102_init()){ 
-        __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "max30102 not found!\n");
-    }
-    else{
-        __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "max30102 initiated!\n");
-    }
-    max30102_fir_init();
-#endif
-
-
-#if ICM42688_EN
-    
-    if(true != icm42688_init()){ 
-        __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "icm42688 not found!\n");
-    }
-    else{
-        __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, "icm42688 initiated!\n");
-    }
-#endif
-
-#if MP34DT05
-    pdm_init();  //pdm麦克风初始化
-
-    nrfx_pdm_start();
-
-#endif
-    
-
     // Set up a task for processing button/RTT events
-    if (pdPASS != xTaskCreate(button_handler_thread, 
-                              "BTN", 
-                              BUTTON_HANDLER_THREAD_STACK_SIZE, 
-                              NULL, 
-                              BUTTON_HANDLER_THREAD_PRIORITY, 
-                              &m_button_handler_thread))
+    if (pdPASS != xTaskCreate(button_handler_thread, "BTN", 512, NULL, 1, &m_button_handler_thread))
     {
         APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
     }
-
-    if (pdPASS != xTaskCreate(sensor_process_thread, 
-                              "SENSOR", 
-                              SENSOR_PROCESS_THREAD_STACK_SIZE, 
-                              NULL, 
-                              SENSOR_PROCESS_THREAD_PRIORITY, 
-                              &m_sensor_process_thread))
-    {
-        APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
-    }
-    
-    if (pdPASS != xTaskCreate(heartRate_process_thread, 
-                              "HeartRate", 
-                              HEARTRATE_PROCESS_THREAD_STACK_SIZE, 
-                              NULL, 
-                              HEARTRATE_PROCESS_THREAD_PRIORITY, 
-                              &m_heartRate_process_thread))
-    {
-        APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
-    }
-    
-
 
     // Create a FreeRTOS task for handling SoftDevice events.
     // That task will call the start function when the task is started.
     nrf_sdh_freertos_init(start, &m_device_provisioned);
+
 }
 
-static void start(void * p_device_provisioned)
+static void start(void)
 {
     bool device_provisioned = *(bool *)p_device_provisioned;
-
     rtt_input_enable(app_rtt_input_handler, RTT_INPUT_POLL_PERIOD_MS);
-    
+
     if (!device_provisioned)
     {
         static const uint8_t static_auth_data[NRF_MESH_KEY_SIZE] = STATIC_AUTH_DATA;
@@ -747,25 +551,24 @@ static void start(void * p_device_provisioned)
 
     mesh_app_uuid_print(nrf_mesh_configure_device_uuid_get());
 
+    /* NRF_MESH_EVT_ENABLED is triggered in the mesh IRQ context after the stack is fully enabled.
+     * This event is used to call Model APIs for establishing bindings and publish a model state information. */
+    nrf_mesh_evt_handler_add(&m_event_handler);
     ERROR_CHECK(mesh_stack_start());
 
     __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, m_usage_string);
 
-    hal_led_mask_set(LEDS_MASK, LED_MASK_STATE_OFF);
-    hal_led_blink_ms(LEDS_MASK, LED_BLINK_INTERVAL_MS, LED_BLINK_CNT_START);
+    hal_led_mask_set(HAL_LED_MASK_UPPER_HALF, LED_MASK_STATE_OFF);
+    hal_led_blink_ms(HAL_LED_MASK_UPPER_HALF, LED_BLINK_INTERVAL_MS, LED_BLINK_CNT_START);
 }
 
 int main(void)
 {
     initialize();
-
-    // Start the FreeRTOS scheduler.
-    vTaskStartScheduler();
+    start();
 
     for (;;)
     {
-        // The app should stay in the FreeRTOS scheduler loop and should never reach this point.
-        APP_ERROR_HANDLER(NRF_ERROR_FORBIDDEN);
+        (void)sd_app_evt_wait();
     }
 }
-

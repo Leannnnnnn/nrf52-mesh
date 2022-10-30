@@ -43,9 +43,6 @@
 #include "simple_hal.h"
 #include "app_timer.h"
 
-#include "custom_uart.h"
-
-
 /* Core */
 #include "nrf_mesh_config_core.h"
 #include "nrf_mesh_gatt.h"
@@ -56,6 +53,8 @@
 #include "device_state_manager.h"
 #include "access_config.h"
 #include "proxy.h"
+#include "bearer_event.h"
+
 
 /* Provisioning and configuration */
 #include "mesh_provisionee.h"
@@ -67,19 +66,49 @@
 #include "model_config_file.h"
 #include "hx_control_model_create.h"
 
+/* FreeRTOS and dependencies */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "nrf_sdh_freertos.h"
+#include "nrf_drv_clock.h"
+
 /* Logging and RTT */
 #include "log.h"
 #include "rtt_input.h"
 
 /* Example specific includes */
+#include "nrf_sdh_soc.h"
 #include "app_config.h"
 #include "example_common.h"
 #include "nrf_mesh_config_examples.h"
 #include "light_switch_example_common.h"
 #include "app_onoff.h"
 #include "ble_softdevice_support.h"
+
 #include "app_dtt.h"
 #include "app_scene.h"
+
+/* Custom Libraries */
+#include "custom_uart.h"
+
+
+/***********************************************************************************
+ * Definitions in freertos
+ ***********************************************************************************/
+#define SENSOR_PROCESS_THREAD_STACK_SIZE     (512)
+#define HEARTRATE_PROCESS_THREAD_STACK_SIZE  (512)
+#define BUTTON_HANDLER_THREAD_STACK_SIZE     (512)
+
+#define SENSOR_PROCESS_THREAD_PRIORITY       (1)
+#define HEARTRATE_PROCESS_THREAD_PRIORITY    (2)
+#define BUTTON_HANDLER_THREAD_PRIORITY       (1)
+
+static TaskHandle_t m_mesh_process_task;  /* The handle for the Mesh processing task */
+static TaskHandle_t m_button_handler_thread;  /* The handle for the button handler thread */
+static TaskHandle_t m_heartRate_process_thread;  /* The handle for heartRate sensors processing thread */
+static TaskHandle_t m_sensor_process_thread;  /* The handle for other sensors processing thread */
+
+
 
 /*****************************************************************************
  * Definitions
@@ -91,6 +120,7 @@
 #define APP_FORCE_SEGMENTATION      (false)
 /* Controls the MIC size used by the model instance for sending the mesh messages. */
 #define APP_MIC_SIZE                (NRF_MESH_TRANSMIC_SIZE_SMALL)
+
 
 
 /*****************************************************************************
@@ -106,10 +136,17 @@ static void app_onoff_scene_transition_cb(const app_scene_setup_server_t * p_app
                                           uint32_t transition_time_ms,
                                           uint16_t target_scene);
 #endif
+
+static void start(void * p_device_provisioned);
+static void button_thread_notify(uint32_t button);
+
+
 /*****************************************************************************
  * Static variables
  *****************************************************************************/
 static bool m_device_provisioned;
+
+
 static nrf_mesh_evt_handler_t m_event_handler =
 {
     .evt_cb = mesh_events_handle,
@@ -524,9 +561,10 @@ static void initialize(void)
 
 }
 
-static void start(void)
+static void start(void * p_device_provisioned)
 {
     bool device_provisioned = *(bool *)p_device_provisioned;
+
     rtt_input_enable(app_rtt_input_handler, RTT_INPUT_POLL_PERIOD_MS);
 
     if (!device_provisioned)
@@ -551,9 +589,6 @@ static void start(void)
 
     mesh_app_uuid_print(nrf_mesh_configure_device_uuid_get());
 
-    /* NRF_MESH_EVT_ENABLED is triggered in the mesh IRQ context after the stack is fully enabled.
-     * This event is used to call Model APIs for establishing bindings and publish a model state information. */
-    nrf_mesh_evt_handler_add(&m_event_handler);
     ERROR_CHECK(mesh_stack_start());
 
     __LOG(LOG_SRC_APP, LOG_LEVEL_INFO, m_usage_string);
@@ -565,10 +600,12 @@ static void start(void)
 int main(void)
 {
     initialize();
-    start();
+    // Start the FreeRTOS scheduler.
+    vTaskStartScheduler();
 
     for (;;)
     {
-        (void)sd_app_evt_wait();
+        // The app should stay in the FreeRTOS scheduler loop and should never reach this point.
+        APP_ERROR_HANDLER(NRF_ERROR_FORBIDDEN);
     }
 }

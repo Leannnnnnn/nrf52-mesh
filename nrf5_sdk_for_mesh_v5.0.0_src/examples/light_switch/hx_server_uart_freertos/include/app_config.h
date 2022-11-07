@@ -76,6 +76,7 @@
 
 /** Configuration for the BLE SoftDevice support module to be enabled. */
 #define NRF_SDH_ENABLED 1
+#define NRF_SDH_DISPATCH_MODEL 2
 #define NRF_SDH_BLE_ENABLED 1
 #define NRF_SDH_SOC_ENABLED 1
 #define NRF_SDH_BLE_GATT_MAX_MTU_SIZE 69

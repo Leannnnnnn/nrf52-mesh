@@ -53,7 +53,7 @@
       <file file_name="include/FreeRTOSConfig.h" />
       <configuration
         Name="Common"
-        c_user_include_directories="../../../mesh/core/include;$(SDK_ROOT:../../../../nRF5_SDK_17.0.2_d674dde)\\external\\freertos\\source\\include;$(SDK_ROOT:../../../../nRF5_SDK_17.0.2_d674dde)\\external\\freertos\\portable\\CMSIS\\nrf52;$(SDK_ROOT:../../../../nRF5_SDK_17.0.2_d674dde)\\external\\freertos\\portable\\ARM\\nrf52" />
+        c_user_include_directories="../../../mesh/core/include;$(SDK_ROOT:../../../../nRF5_SDK_17.0.2_d674dde)\\external\\freertos\\source\\include;$(SDK_ROOT:../../../../nRF5_SDK_17.0.2_d674dde)\\external\\freertos\\portable\\CMSIS\\nrf52;$(SDK_ROOT:../../../../nRF5_SDK_17.0.2_d674dde)\\external\\freertos\\portable\\ARM\\nrf52;../../../mesh/core/api" />
     </folder>
     <folder Name="Core">
       <file file_name="../../../mesh/core/src/internal_event.c" />
@@ -109,7 +109,6 @@
       <file file_name="../../../mesh/core/src/core_tx_local.c" />
       <file file_name="../../../mesh/core/src/emergency_cache.c" />
       <file file_name="../../../mesh/core/src/core_tx_adv.c" />
-      <file file_name="../../../mesh/core/src/mesh_mem_stdlib.c" />
       <configuration
         Name="Common"
         c_user_include_directories="../../../mesh/core/include;../../../mesh/core/api" />
@@ -286,6 +285,9 @@
         c_user_include_directories="$(SDK_ROOT:../../../../nRF5_SDK_17.0.2_d674dde)\\external\\freertos\\source\\include;$(SDK_ROOT:../../../../nRF5_SDK_17.0.2_d674dde)\\external\\freertos\\portable\\CMSIS\\nrf52;$(SDK_ROOT:../../../../nRF5_SDK_17.0.2_d674dde)\\external\\freertos\\portable\\ARM\\nrf52" />
       <file file_name="src/mesh_freertos/mesh_mem_freertos.c" />
       <file file_name="src/mesh_freertos/sdk_modified/nrf_sdh_freertos.c" />
+      <configuration
+        Name="Debug"
+        build_intermediate_directory="build/obj/freertos" />
     </folder>
   </project>
   <configuration

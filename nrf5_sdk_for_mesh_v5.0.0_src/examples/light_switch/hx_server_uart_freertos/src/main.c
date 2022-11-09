@@ -374,7 +374,7 @@ static void mesh_init(void)
 
     mesh_stack_init_params_t init_params =
     {
-        .core.irq_priority       = NRF_MESH_IRQ_PRIORITY_LOWEST,
+        .core.irq_priority       = NRF_MESH_IRQ_PRIORITY_THREAD,
         .core.lfclksrc           = DEV_BOARD_LF_CLK_CFG,
         .core.p_uuid             = NULL,
         .models.models_init_cb   = models_init_cb,

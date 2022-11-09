@@ -59,7 +59,7 @@
 #endif
 
 /** Set the FreeRTOS SDH task stack depth */
-#define NRF_BLE_FREERTOS_SDH_TASK_STACK 1024
+#define NRF_BLE_FREERTOS_SDH_TASK_STACK 512
 
 
 /** @} end of APP_SPECIFIC_DEFINES */

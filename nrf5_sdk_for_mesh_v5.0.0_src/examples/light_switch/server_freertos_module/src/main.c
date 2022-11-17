@@ -606,7 +606,8 @@ static void pdm_init(void)
                                     .mode               = PDM_MODE_OPERATION_Mono,       \
                                     .edge               = PDM_MODE_EDGE_LeftRising,       \
                                     .pin_clk            = 3,                                   \
-                                    .pin_din            = 4,                                   \
+                                    .pin_din            = 4,               
+                                                        \
                                     .clock_freq         = PDM_PDMCLKCTRL_FREQ_1280K, \
                                     .gain_l             = NRF_PDM_GAIN_DEFAULT,                       \
                                     .gain_r             = NRF_PDM_GAIN_DEFAULT,                       \

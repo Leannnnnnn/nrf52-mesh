@@ -278,6 +278,7 @@ static void provisioning_resume(void)
             provisioning_start();
             m_node_prov_setup_started = true;
         }
+
     }
 }
 
@@ -493,6 +494,7 @@ static void mesh_init(void)
     }
 }
 
+
 static void initialize(void)
 {
     __LOG_INIT(LOG_SRC_APP | LOG_SRC_ACCESS, LOG_LEVEL_INFO, LOG_CALLBACK_DEFAULT);
@@ -536,6 +538,7 @@ static void start(void)
 
     hal_led_mask_set(HAL_LED_MASK, LED_MASK_STATE_OFF);
     hal_led_blink_ms(HAL_LED_MASK, LED_BLINK_INTERVAL_MS, LED_BLINK_CNT_START);
+
 }
 
 int main(void)

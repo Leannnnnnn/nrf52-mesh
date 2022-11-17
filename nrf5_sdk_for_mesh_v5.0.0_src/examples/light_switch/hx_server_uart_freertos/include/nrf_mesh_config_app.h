@@ -61,7 +61,7 @@
  *  The actual stack allocated is equal to MESH_FREERTOS_TASK_STACK_DEPTH * sizeof(StackType_t)
  *  May have to be increased for some use cases.
  */
-#define MESH_FREERTOS_TASK_STACK_DEPTH      (512)
+#define MESH_FREERTOS_TASK_STACK_DEPTH      (1024)
 
 /** The FreeRTOS task priority used for the Mesh processing task.
  *  Should not have to be modified.

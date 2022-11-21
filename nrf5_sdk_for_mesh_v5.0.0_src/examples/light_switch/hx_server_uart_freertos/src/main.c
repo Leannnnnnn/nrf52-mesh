@@ -232,13 +232,6 @@ static void app_model_init(void)
 
 /*************************************************************************************************/
 
-static void mesh_events_handle(const nrf_mesh_evt_t * p_evt)
-{
-    if (p_evt->type == NRF_MESH_EVT_ENABLED)
-    {
-        APP_ERROR_CHECK(app_onoff_value_restore(&m_onoff_server_0));
-    }
-}
 
 static void node_reset(void)
 {
@@ -315,7 +308,7 @@ static void app_rtt_input_handler(int key)
     if (key >= '1' && key <= '4')
     {
         uint32_t button_number = key - '1';
-        button_event_handler(button_number);
+        button_thread_notify(button_number);
     }
     else
     {

@@ -296,7 +296,7 @@ static access_model_id_t step_model_id_get(void)
 {
     access_model_id_t model_id =
     {
-        .company_id = ACCESS_COMPANY_ID_NONE,
+        .company_id = ACCESS_COMPANY_ID_NONE,  //TODO: ACCESS_COMPANY_ID_NORDIC
         .model_id = mp_config_step->model_id
     };
 

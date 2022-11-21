@@ -55,13 +55,13 @@
 /** Set this to 1 to resume the Mesh processing task in the FreeRTOS idle handler instead
  *  of resuming it in the bearer_event signal handler
  */
-#define MESH_FREERTOS_IDLE_HANDLER_RESUME   0
+#define MESH_FREERTOS_IDLE_HANDLER_RESUME   1
 
 /** The stack depth used for the Mesh processing task.
  *  The actual stack allocated is equal to MESH_FREERTOS_TASK_STACK_DEPTH * sizeof(StackType_t)
  *  May have to be increased for some use cases.
  */
-#define MESH_FREERTOS_TASK_STACK_DEPTH      (1024)
+#define MESH_FREERTOS_TASK_STACK_DEPTH      (2048)
 
 /** The FreeRTOS task priority used for the Mesh processing task.
  *  Should not have to be modified.

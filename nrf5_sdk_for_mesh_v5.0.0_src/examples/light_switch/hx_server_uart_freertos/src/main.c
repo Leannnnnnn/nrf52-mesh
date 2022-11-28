@@ -303,7 +303,7 @@ static void button_event_handler(uint32_t button_number)
     }
 }
 
-static void app_rtt_input_handler(int key)
+static void app_rtt_input_handler(int key)  //利用rrt创建定时器查询按键
 {
     if (key >= '1' && key <= '4')
     {
@@ -506,7 +506,7 @@ static uint32_t nrf_mesh_process_thread_init(void)
     }
 
 #if !MESH_FREERTOS_IDLE_HANDLER_RESUME
-    bearer_event_trigger_event_callback_set(APP_IRQ_PRIORITY_LOW, mesh_freertos_trigger_event_callback);
+    bearer_event_trigger_event_callback_set(NRF_MESH_IRQ_PRIORITY_LOWEST, mesh_freertos_trigger_event_callback);
 #endif
 
     return NRF_SUCCESS;

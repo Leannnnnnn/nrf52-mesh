@@ -409,7 +409,11 @@ static const char * model_name_by_id_get(uint16_t model_id)
             return "Scene server";
         case SCENE_SETUP_SERVER_MODEL_ID:
             return "Scene setup server";
-        default:
+
+        case HX_CONTROL_MODEL_ID:        //TODO: vendor model
+            return "Hx controller";
+
+        default:                            
             return "Unknown model";
     }
 }

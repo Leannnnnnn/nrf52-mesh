@@ -441,6 +441,6 @@ bool bearer_event_in_correct_irq_priority(void)
     else
     {
         volatile uint32_t prio = NVIC_GetPriority(active_irq);
-        return (prio == m_irq_priority || (prio > m_irq_priority && !hal_irq_is_enabled(EVENT_IRQn)));
+        return (prio == m_irq_priority || (prio < m_irq_priority && !hal_irq_is_enabled(EVENT_IRQn)));  //TODO: custom revised: (prio > m_irq_priority) -> (prio < m_irq_priority)
     }
 }

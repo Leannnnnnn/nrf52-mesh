@@ -35,65 +35,33 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef APP_CONFIG_H__
-#define APP_CONFIG_H__
+#ifndef MESH_OPT_PROVISIONER_H__
+#define MESH_OPT_PROVISIONER_H__
 
-#include <stdbool.h>
+#include <stdint.h>
+#include "nrf_mesh_config_app.h"
 
 /**
- * @defgroup APP_SPECIFIC_DEFINES Application-specific macro definitions
- *
+ * @defgroup MESH_OPT_PROVISIONER access persistent options
+ * @ingroup MESH_OPT
+ * Runtime configuration for Mesh config ligth switch provisioner functionality.
  * @{
  */
 
-/** Redefine the RTC instance used by FreeRTOS since both Mesh and FreeRTOS use RTC1. */
-#ifdef portNRF_RTC_REG
-#undef portNRF_RTC_REG
-#define portNRF_RTC_REG NRF_RTC2
-#endif
+/** @internal @{ */
+/** File IDs for the enocean example that store its parameters in the persistence memory.
+ * The IDs must be unique. */
+#define MESH_APP_FILE_ID (0x0010)
 
-/** Redefine the RTC IRQn used by FreeRTOS since both Mesh and FreeRTOS use RTC1 */
-#ifdef portNRF_RTC_IRQn
-#undef portNRF_RTC_IRQn
-#define portNRF_RTC_IRQn RTC2_IRQn
-#endif
+enum
+{
+    PROVISIONER_RECORD  = 0x0001
+};
 
-/** Set the FreeRTOS SDH task stack depth */
-#define NRF_BLE_FREERTOS_SDH_TASK_STACK 512
+/** Provisioner mesh config data entry. */
+#define PROVISIONER_ENTRY_ID MESH_CONFIG_ENTRY_ID(MESH_APP_FILE_ID, PROVISIONER_RECORD)
 
+/** @} end of MESH_OPT_PROVISIONER */
 
-/** @} end of APP_SPECIFIC_DEFINES */
+#endif /* MESH_OPT_PROVISIONER_H__ */
 
-/**
- * @defgroup APP_SDK_CONFIG SDK configuration
- *
- * Application-specific SDK configuration settings are provided here.
- *
- * @{
- */
-
-/** Override default sdk_config.h values. */
-
-/** Configuration for the BLE SoftDevice support module to be enabled. */
-#define NRF_SDH_ENABLED 1
-#define NRF_SDH_DISPATCH_MODEL 2
-#define NRF_SDH_BLE_ENABLED 1
-#define NRF_SDH_SOC_ENABLED 1
-#define NRF_SDH_BLE_GATT_MAX_MTU_SIZE 69
-#define NRF_SDH_BLE_PERIPHERAL_LINK_COUNT 1
-#define NRF_SDH_BLE_SERVICE_CHANGED 1
-#define NRF_BLE_CONN_PARAMS_ENABLED 1
-
-#define APP_TIMER_ENABLED 1
-#define APP_TIMER_KEEPS_RTC_ACTIVE 1
-#define APP_TIMER_CONFIG_RTC_FREQUENCY  0
-
-#define GPIOTE_ENABLED 1
-#define GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS 4
-
-// Required by FreeRTOS
-#define NRF_CLOCK_ENABLED 1
-
-/** @} end of APP_SDK_CONFIG */
-
-#endif /* APP_CONFIG_H__ */

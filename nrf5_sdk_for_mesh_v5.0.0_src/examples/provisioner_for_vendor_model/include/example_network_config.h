@@ -35,65 +35,51 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef APP_CONFIG_H__
-#define APP_CONFIG_H__
+#ifndef EXAMPLE_NETWORK_CONFIG_H__
+#define EXAMPLE_NETWORK_CONFIG_H__
 
-#include <stdbool.h>
+/** The maximum number of provisionee devices that provisioner is able to introduce in the network.
+ *  Provisioner keeps the device key for every provisioned device.
+ *  If the value of MAX_PROVISIONEE_NUMBER is increased, you need to scale up
+ *  the replay protection list size (@ref REPLAY_CACHE_ENTRIES). */
+#define MAX_PROVISIONEE_NUMBER      (40)
+
+/** Number of group address being used in this example. */
+#define GROUP_ADDR_COUNT             (4)
 
 /**
- * @defgroup APP_SPECIFIC_DEFINES Application-specific macro definitions
- *
+ * @defgroup LIGHT_SWT_V2 Light, Switch, and a Provisioner example common settings
  * @{
  */
 
-/** Redefine the RTC instance used by FreeRTOS since both Mesh and FreeRTOS use RTC1. */
-#ifdef portNRF_RTC_REG
-#undef portNRF_RTC_REG
-#define portNRF_RTC_REG NRF_RTC2
-#endif
+#define APPKEY_INDEX (0)
+#define NETKEY_INDEX (0)
 
-/** Redefine the RTC IRQn used by FreeRTOS since both Mesh and FreeRTOS use RTC1 */
-#ifdef portNRF_RTC_IRQn
-#undef portNRF_RTC_IRQn
-#define portNRF_RTC_IRQn RTC2_IRQn
-#endif
+#define CLIENT_PUB_GROUP_ADDRESS_EVEN (0xC002)
+#define CLIENT_PUB_GROUP_ADDRESS_ODD  (0xC003)
 
-/** Set the FreeRTOS SDH task stack depth */
-#define NRF_BLE_FREERTOS_SDH_TASK_STACK 512
+#define SERVER_PUB_GROUP_ADDRESS_EVEN (0xC004)
+#define SERVER_PUB_GROUP_ADDRESS_ODD  (0xC005)
 
+#define PROVISIONER_ADDRESS           (0x0001)
+#define CLIENT_INITIAL_ADDRESS        (0x0100)
+#define ONOFF_SERVER_INITIAL_ADDRESS  (0x0201)
+#define LEVEL_SERVER_INITIAL_ADDRESS  (0x0301)
+#define LL_SERVER_INITIAL_ADDRESS     (0x0401)
+#define LC_SERVER_INITIAL_ADDRESS     (0x0501)
+#define CTL_SERVER_INITIAL_ADDRESS    (0x0601)
+#define CTL_LC_SERVER_INITIAL_ADDRESS (0x0701)
+#define SENSOR_INITIAL_ADDRESS        (0x0801)
 
-/** @} end of APP_SPECIFIC_DEFINES */
+#define UNPROV_MAX_SCANNED_ITEMS_LIST   10
 
-/**
- * @defgroup APP_SDK_CONFIG SDK configuration
- *
- * Application-specific SDK configuration settings are provided here.
- *
- * @{
- */
+#define ATTENTION_DURATION_S            (5)
 
-/** Override default sdk_config.h values. */
+#define PROVISIONER_RETRY_COUNT         (2)
 
-/** Configuration for the BLE SoftDevice support module to be enabled. */
-#define NRF_SDH_ENABLED 1
-#define NRF_SDH_DISPATCH_MODEL 2
-#define NRF_SDH_BLE_ENABLED 1
-#define NRF_SDH_SOC_ENABLED 1
-#define NRF_SDH_BLE_GATT_MAX_MTU_SIZE 69
-#define NRF_SDH_BLE_PERIPHERAL_LINK_COUNT 1
-#define NRF_SDH_BLE_SERVICE_CHANGED 1
-#define NRF_BLE_CONN_PARAMS_ENABLED 1
+#define NETWORK_TRANSMIT_COUNT          (2)
+#define NETWORK_TRANSMIT_INTERVAL_STEPS (1)
 
-#define APP_TIMER_ENABLED 1
-#define APP_TIMER_KEEPS_RTC_ACTIVE 1
-#define APP_TIMER_CONFIG_RTC_FREQUENCY  0
+/** @} end of LIGHT_SWT_V2 */
 
-#define GPIOTE_ENABLED 1
-#define GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS 4
-
-// Required by FreeRTOS
-#define NRF_CLOCK_ENABLED 1
-
-/** @} end of APP_SDK_CONFIG */
-
-#endif /* APP_CONFIG_H__ */
+#endif /* EXAMPLE_NETWORK_CONFIG_H__ */

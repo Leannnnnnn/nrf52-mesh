@@ -39,9 +39,9 @@
  </Watch4>
  <Files>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="30" useTextEdit="1" path="../../../doc/getting_started/SES.md" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="27" y="56" useTextEdit="1" path="src/main.c" left="0" top="81" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="38" y="115" useTextEdit="1" path="include/nrf_mesh_config_app.h" left="0" selected="1" top="156" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="49" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/NRF52/SES_mesh_pj/newest_sdk/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/client/include/nrf_mesh_config_app.h" path="../include/light_switch_example_common.h" left="0" top="20" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="27" y="56" useTextEdit="1" path="src/main.c" left="0" top="56" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="38" y="115" useTextEdit="1" path="include/nrf_mesh_config_app.h" left="0" selected="1" top="115" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="49" useTextEdit="1" openedFrom="D:/MyProject/PJ_FreeRTOS/NRF52/SES_mesh_pj/newest_sdk/nrf5_sdk_for_mesh_v5.0.0_src/examples/light_switch/client/include/nrf_mesh_config_app.h" path="../include/light_switch_example_common.h" left="0" top="9" codecName="Default"/>
  </Files>
- <EMStudioWindow activeProject="light_switch_client_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3711"/>
+ <EMStudioWindow activeProject="light_switch_client_nrf52840_xxAA_s140_7.2.0" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>

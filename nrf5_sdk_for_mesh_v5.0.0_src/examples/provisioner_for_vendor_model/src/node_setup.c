@@ -409,7 +409,11 @@ static const char * model_name_by_id_get(uint16_t model_id)
             return "Scene server";
         case SCENE_SETUP_SERVER_MODEL_ID:
             return "Scene setup server";
-        default:
+
+        case HX_CONTROL_MODEL_ID:        //TODO: vendor model
+            return "Hx controller";
+
+        default:                            
             return "Unknown model";
     }
 }
@@ -485,7 +489,7 @@ static void config_step_execute(void)
         case NODE_SETUP_CONFIG_APPKEY_BIND_LEVEL_CLIENT:
         case NODE_SETUP_CONFIG_APPKEY_BIND_ONOFF_CLIENT:
         case NODE_SETUP_CONFIG_APPKEY_BIND_LL_CLIENT:
-        case NODE_SETUP_CONFIG_APPKEY_BIND_CTL_CLIENT:c
+        case NODE_SETUP_CONFIG_APPKEY_BIND_CTL_CLIENT:
         case NODE_SETUP_CONFIG_APPKEY_BIND_SENSOR_CLIENT:
         case NODE_SETUP_CONFIG_APPKEY_BIND_SCENE_CLIENT:  //TODO: vendor model
         {

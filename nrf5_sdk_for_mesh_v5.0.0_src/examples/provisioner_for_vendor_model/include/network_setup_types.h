@@ -34,66 +34,43 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#ifndef NETWORK_SETUP_H__
+#define NETWORK_SETUP_H__
 
-#ifndef APP_CONFIG_H__
-#define APP_CONFIG_H__
+#include "device_state_manager.h"
+#include "health_client.h"
+#include "nrf_mesh_defines.h"
 
-#include <stdbool.h>
+/** Structure to store the handles data related to provisioned devices */
+typedef struct
+{
+    dsm_handle_t m_self_devkey_handle;
+    dsm_handle_t m_netkey_handle;
+    dsm_handle_t m_appkey_handle;
 
-/**
- * @defgroup APP_SPECIFIC_DEFINES Application-specific macro definitions
- *
- * @{
- */
+    health_client_t m_health_client_instance;
+} network_dsm_handles_data_volatile_t;
 
-/** Redefine the RTC instance used by FreeRTOS since both Mesh and FreeRTOS use RTC1. */
-#ifdef portNRF_RTC_REG
-#undef portNRF_RTC_REG
-#define portNRF_RTC_REG NRF_RTC2
-#endif
+/** Structure to store the state of the provisioning process of the network nodes */
+typedef struct
+{
+    uint8_t provisioned_devices;
+    uint8_t configured_devices;
+    uint16_t last_device_address;
+    uint8_t client_counter;
+    uint8_t onoff_server_counter;
+    uint8_t level_server_counter;
+    uint8_t ll_server_counter;
+    uint8_t lc_server_counter;
+    uint8_t ctl_server_counter;
+    uint8_t ctl_lc_server_counter;
+    uint8_t sensor_server_counter;
 
-/** Redefine the RTC IRQn used by FreeRTOS since both Mesh and FreeRTOS use RTC1 */
-#ifdef portNRF_RTC_IRQn
-#undef portNRF_RTC_IRQn
-#define portNRF_RTC_IRQn RTC2_IRQn
-#endif
+    const char * current_uri;
 
-/** Set the FreeRTOS SDH task stack depth */
-#define NRF_BLE_FREERTOS_SDH_TASK_STACK 512
+    uint8_t  netkey[NRF_MESH_KEY_SIZE];
+    uint8_t  appkey[NRF_MESH_KEY_SIZE];
+    uint8_t  self_devkey[NRF_MESH_KEY_SIZE];
+} network_stats_data_stored_t;
 
-
-/** @} end of APP_SPECIFIC_DEFINES */
-
-/**
- * @defgroup APP_SDK_CONFIG SDK configuration
- *
- * Application-specific SDK configuration settings are provided here.
- *
- * @{
- */
-
-/** Override default sdk_config.h values. */
-
-/** Configuration for the BLE SoftDevice support module to be enabled. */
-#define NRF_SDH_ENABLED 1
-#define NRF_SDH_DISPATCH_MODEL 2
-#define NRF_SDH_BLE_ENABLED 1
-#define NRF_SDH_SOC_ENABLED 1
-#define NRF_SDH_BLE_GATT_MAX_MTU_SIZE 69
-#define NRF_SDH_BLE_PERIPHERAL_LINK_COUNT 1
-#define NRF_SDH_BLE_SERVICE_CHANGED 1
-#define NRF_BLE_CONN_PARAMS_ENABLED 1
-
-#define APP_TIMER_ENABLED 1
-#define APP_TIMER_KEEPS_RTC_ACTIVE 1
-#define APP_TIMER_CONFIG_RTC_FREQUENCY  0
-
-#define GPIOTE_ENABLED 1
-#define GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS 4
-
-// Required by FreeRTOS
-#define NRF_CLOCK_ENABLED 1
-
-/** @} end of APP_SDK_CONFIG */
-
-#endif /* APP_CONFIG_H__ */
+#endif /* NETWORK_SETUP_H__ */

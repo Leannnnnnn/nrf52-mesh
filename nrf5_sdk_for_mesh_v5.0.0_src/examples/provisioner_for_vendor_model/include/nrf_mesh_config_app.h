@@ -38,6 +38,8 @@
 #ifndef NRF_MESH_CONFIG_APP_H__
 #define NRF_MESH_CONFIG_APP_H__
 
+#include "example_network_config.h"
+
 /**
  * @defgroup NRF_MESH_CONFIG_APP nRF Mesh app config
  *
@@ -47,33 +49,20 @@
  */
 
 /**
- * @defgroup MESH_FREERTOS FreeRTOS/Mesh configuration
- *
- * @{
+ * @defgroup MODEL_CONFIG Model layer configuration parameters
  */
 
-/** Set this to 1 to resume the Mesh processing task in the FreeRTOS idle handler instead
- *  of resuming it in the bearer_event signal handler
+/** Define for acknowledging message transaction timeout.
+ * @note @tagMeshSp recommends this to be minimum 60s. However, using
+ * recommendation can result in client getting blocked for a significant amount of time (60s), if
+ * acknowledged transaction does not receive a response.
  */
-#define MESH_FREERTOS_IDLE_HANDLER_RESUME   1
+#define MODEL_ACKNOWLEDGED_TRANSACTION_TIMEOUT  (SEC_TO_US(10))
 
-/** The stack depth used for the Mesh processing task.
- *  The actual stack allocated is equal to MESH_FREERTOS_TASK_STACK_DEPTH * sizeof(StackType_t)
- *  May have to be increased for some use cases.
- */
-#define MESH_FREERTOS_TASK_STACK_DEPTH      (2048)
-
-/** The FreeRTOS task priority used for the Mesh processing task.
- *  Should not have to be modified.
- *  It is important that this is not lower than the priority of the SoftDevice Handler
- *  task in nrf_sdh_freertos.c as that will cause issues with GATT provisioning.
- */
-#define MESH_FREERTOS_TASK_PRIO             4
-
-/** @} end of MESH_FREERTOS */
+/** @} end of MODEL_CONFIG */
 
 /**
- * @defgroup DEVICE_CONFIG Device configuration
+ * @defgroup DEVICE_CONFIG Application-specific device configuration
  *
  * @{
  */
@@ -97,7 +86,7 @@
 /**
  * The default TTL value for the node.
  */
-#define ACCESS_DEFAULT_TTL (4)
+#define ACCESS_DEFAULT_TTL (MAX_PROVISIONEE_NUMBER > NRF_MESH_TTL_MAX ? NRF_MESH_TTL_MAX : MAX_PROVISIONEE_NUMBER)
 
 /**
  * The number of models in the application.
@@ -105,14 +94,10 @@
  * @note To fit the configuration and health models, this value must equal at least
  * the number of models needed by the application plus two.
  */
-#define ACCESS_MODEL_COUNT (/* Element 0:                                       */ \
-                            1 + /* Config Server                                */ \
-                            1 + /* Health Server                                */ \
-                            1 + /* Generic OnOff Server                         */ \
-                            1 + /* Default Transition Time Server               */ \
-                            1 + /* Scene Server                                 */ \
-                            1 + /* Scene Setup Server (extends Scene Server)    */ \
-                            1   /* hx control model */ )
+#define ACCESS_MODEL_COUNT (1 + /* Configuration client */  \
+                            1 + /* Configuration server */  \
+                            1 + /* Health server */ \
+                            1   /* Health client */)
 
 /**
  * The number of elements in the application.
@@ -120,20 +105,11 @@
  * @warning If the application is to support _multiple instances_ of the _same_ model, these instances
  * cannot be in the same element and a separate element is needed for each new instance of the same model.
  */
-#define ACCESS_ELEMENT_COUNT (1)
+#define ACCESS_ELEMENT_COUNT (1) /* Provisioner node has only 1 element */
 
 /**
- * The number of (root only) default transition time instances used by the application.
- */
-#define GENERIC_DTT_SERVER_INSTANCES_MAX (1)
-
-/**
- * The number of (root only) generic onoff instances used by the application.
- */
-#define GENERIC_ONOFF_SERVER_INSTANCES_MAX (1)
-
-/**
- * The number of scene setup server instances used by the application.
+ * The number of scene setup server instances used by the application. This is only used to
+ * enable/disable the scene setup server configuration in the different servers.
  */
 #ifndef SCENE_SETUP_SERVER_INSTANCES_MAX
 #define SCENE_SETUP_SERVER_INSTANCES_MAX (1)
@@ -178,53 +154,20 @@
  * @{
  */
 /** Maximum number of subnetworks. */
-#define DSM_SUBNET_MAX                                  (4)
+#define DSM_SUBNET_MAX                                  (1)
 /** Maximum number of applications. */
-#define DSM_APP_MAX                                     (8)
+#define DSM_APP_MAX                                     (1)
 /** Maximum number of device keys. */
-#define DSM_DEVICE_MAX                                  (1)
+#define DSM_DEVICE_MAX                                  (1 + /* For self. */\
+                                                         MAX_PROVISIONEE_NUMBER /* For provisionee nodes. */)
 /** Maximum number of virtual addresses. */
 #define DSM_VIRTUAL_ADDR_MAX                            (1)
-/** Maximum number of non-virtual addresses.
- * - Generic OnOff publication
- * - Health publication
- * - Subscription address
- */
-#define DSM_NONVIRTUAL_ADDR_MAX                         (3)
+/** Maximum number of non-virtual addresses. One for each of the servers and a group address. */
+#define DSM_NONVIRTUAL_ADDR_MAX                         (1 + /* For self address. */\
+                                                         GROUP_ADDR_COUNT + /* Group addresses.  */\
+		                                         2 * MAX_PROVISIONEE_NUMBER)
 /** @} end of DSM_CONFIG */
 
 /** @} */
-
-/**
- * @defgroup NRF_MESH_CONFIG_CORE Compile time configuration
- * Configuration of the compilation of the core mesh modules.
- * @ingroup CORE_CONFIG
- * @{
- */
-
-/**
- * @defgroup MESH_CONFIG_GATT GATT configuration defines
- * @{
- */
-/** PB-GATT feature. To be enabled only in combination with linking GATT files. */
-#define MESH_FEATURE_PB_GATT_ENABLED                    (1)
-/** GATT proxy feature. To be enabled only in combination with linking GATT proxy files. */
-#define MESH_FEATURE_GATT_PROXY_ENABLED                 (1)
-/** @} end of MESH_CONFIG_GATT */
-
-/** Enable the Friend feature. */
-#define MESH_FEATURE_FRIEND_ENABLED (1)
-
-/**
- * @defgroup BLE_SOFTDEVICE_SUPPORT_CONFIG BLE SoftDevice support module configuration.
- * @ingroup MESH_API_GROUP_APP_SUPPORT
- * Configuration for compile time. Part of BLE SoftDevice support module.
- *
- * @{
- */
-#define GAP_DEVICE_NAME                 "nRF5x Mesh Light hx rtos"
-/** @} end of BLE_SOFTDEVICE_SUPPORT_CONFIG */
-
-/** @} end of NRF_MESH_CONFIG_CORE */
 
 #endif /* NRF_MESH_CONFIG_APP_H__ */

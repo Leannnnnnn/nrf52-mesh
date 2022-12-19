@@ -38,51 +38,10 @@
 #ifndef APP_CONFIG_H__
 #define APP_CONFIG_H__
 
-#include <stdbool.h>
-
-/**
- * @defgroup APP_SPECIFIC_DEFINES Application-specific macro definitions
- *
- * @{
- */
-
-/** Redefine the RTC instance used by FreeRTOS since both Mesh and FreeRTOS use RTC1. */
-#ifdef portNRF_RTC_REG
-#undef portNRF_RTC_REG
-#define portNRF_RTC_REG NRF_RTC2
-#endif
-
-/** Redefine the RTC IRQn used by FreeRTOS since both Mesh and FreeRTOS use RTC1 */
-#ifdef portNRF_RTC_IRQn
-#undef portNRF_RTC_IRQn
-#define portNRF_RTC_IRQn RTC2_IRQn
-#endif
-
-/** Set the FreeRTOS SDH task stack depth */
-#define NRF_BLE_FREERTOS_SDH_TASK_STACK 512
-
-
-/** @} end of APP_SPECIFIC_DEFINES */
-
-/**
- * @defgroup APP_SDK_CONFIG SDK configuration
- *
- * Application-specific SDK configuration settings are provided here.
- *
- * @{
- */
-
 /** Override default sdk_config.h values. */
-
-/** Configuration for the BLE SoftDevice support module to be enabled. */
 #define NRF_SDH_ENABLED 1
-#define NRF_SDH_DISPATCH_MODEL 2
 #define NRF_SDH_BLE_ENABLED 1
 #define NRF_SDH_SOC_ENABLED 1
-#define NRF_SDH_BLE_GATT_MAX_MTU_SIZE 69
-#define NRF_SDH_BLE_PERIPHERAL_LINK_COUNT 1
-#define NRF_SDH_BLE_SERVICE_CHANGED 1
-#define NRF_BLE_CONN_PARAMS_ENABLED 1
 
 #define APP_TIMER_ENABLED 1
 #define APP_TIMER_KEEPS_RTC_ACTIVE 1
@@ -90,10 +49,5 @@
 
 #define GPIOTE_ENABLED 1
 #define GPIOTE_CONFIG_NUM_OF_LOW_POWER_EVENTS 4
-
-// Required by FreeRTOS
-#define NRF_CLOCK_ENABLED 1
-
-/** @} end of APP_SDK_CONFIG */
 
 #endif /* APP_CONFIG_H__ */

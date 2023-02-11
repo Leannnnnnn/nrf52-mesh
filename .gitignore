@@ -12,3 +12,27 @@
 
 nrf5_sdk_for_mesh_v5.0.0_src/**/build/
 nrf5_sdk_for_mesh_v5.0.0_src/**/linker/
+
+
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+ 
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+ 
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+ 
+# Executables
+*.exe
+*.out
+*.app
